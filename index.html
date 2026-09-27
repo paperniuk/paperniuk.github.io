@@ -1,92 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Erik Paperniuk</title>
-  <meta name="description" content="Erik Paperniuk: system integration and automation engineer. Splash for M1/M2 Macs with custom Metal kernels, local LLM tooling for Ternary Bonsai 2, AI agents and applied ML.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Erik Paperniuk · Open-source projects</title>
+  <meta name="description" content="Open-source work by Erik Paperniuk: Splash for M1/M2 Macs with custom Metal kernels, local LLM tooling for Ternary Bonsai 2, and automation tools.">
   <link rel="canonical" href="https://paperniuk.github.io/">
-  <meta property="og:title" content="Erik Paperniuk">
-  <meta property="og:description" content="Splash for M1/M2 Macs, local LLM tooling, AI agents and applied ML.">
-  <meta property="og:url" content="https://paperniuk.github.io/">
+
   <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Erik Paperniuk">
+  <meta property="og:title" content="Erik Paperniuk · Open-source projects">
+  <meta property="og:description" content="Splash for M1/M2 Macs, local LLM tooling and automation tools.">
+  <meta property="og:url" content="https://paperniuk.github.io/">
+  <meta property="og:image" content="https://paperniuk.github.io/img/erik.jpg">
+  <meta property="og:image:alt" content="Portrait of Erik Paperniuk">
+  <meta name="twitter:card" content="summary">
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Erik Paperniuk",
     "url": "https://paperniuk.github.io/",
+    "image": "https://paperniuk.github.io/img/erik.jpg",
     "jobTitle": "System Integration & Automation Engineer",
-    "sameAs": ["https://github.com/paperniuk"]
+    "email": "mailto:erp4759@gmail.com",
+    "sameAs": ["https://github.com/paperniuk", "https://www.linkedin.com/in/paperniuk", "https://www.reddit.com/user/Erp4759/"]
   }
   </script>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2320242c'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial,sans-serif' font-weight='600' font-size='17' fill='%239cb6d8' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+
   <style>
+    @font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("fonts/space-grotesk-var-latin.woff2") format("woff2"); }
+    @font-face { font-family: "Inter"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/inter-var-latin.woff2") format("woff2"); }
+
     :root {
-      --bg: #fafaf9; --fg: #1c1917; --muted: #57534e; --line: #e7e5e4; --card: #ffffff; --accent: #0369a1;
+      --bg: #20242c; --bg-deep: #1b1f26; --surface: #272c35;
+      --text: #eceef0; --soft: #c2c7cf; --muted: #9aa1ac; --faint: #8d94a0;
+      --hairline: #343a45; --hairline-strong: #484f5c;
+      --accent: #9cb6d8; --accent-soft: rgba(156, 182, 216, 0.12); --accent-line: rgba(156, 182, 216, 0.4);
+      --font-display: "Space Grotesk", "Inter", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+      --font-body: "Inter", "Helvetica Neue", "Segoe UI", system-ui, -apple-system, sans-serif;
+      --container: 74rem;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
-    @media (prefers-color-scheme: dark) {
-      :root { --bg: #161514; --fg: #f5f5f4; --muted: #a8a29e; --line: #2e2c2a; --card: #1f1d1c; --accent: #7dd3fc; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 1rem; line-height: 1.65; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    ::selection { background: var(--accent); color: var(--bg); }
+    h1, h2, h3, p, ul, figure { margin: 0; }
+    .container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: 1rem; }
+    @media (min-width: 768px) { .container { padding-inline: 3rem; } }
+    .icon { width: 0.95em; height: 0.95em; flex: none; display: inline-block; vertical-align: -0.1em; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 100; background: var(--accent); color: var(--bg); font-size: 0.85rem; font-weight: 500; padding: 0.6rem 1rem; transition: top 0.2s var(--ease); }
+    .skip-link:focus-visible { top: 1rem; }
+
+    .eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; }
+    .section-heading { font-family: var(--font-display); font-weight: 500; font-size: clamp(2rem, 4.5vw, 3.1rem); letter-spacing: -0.02em; line-height: 1.12; margin-bottom: 1.8rem; }
+    .link-arrow { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text); font-size: 0.95rem; font-weight: 500; text-decoration: none; padding-bottom: 2px; background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: color 0.3s var(--ease), background-size 0.3s var(--ease); }
+    .link-arrow .icon { transition: transform 0.3s var(--ease); }
+    .link-arrow:hover { color: var(--accent); background-size: 0% 1px; }
+    .link-arrow:hover .icon { transform: translateX(3px); }
+    .badge { display: inline-block; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-line); border-radius: 99px; padding: 0.32rem 0.85rem; }
+
+    .site-header { border-bottom: 1px solid var(--hairline); background: rgba(32, 36, 44, 0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 50; }
+    .site-nav { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; row-gap: 0.45rem; column-gap: 2rem; padding-block: 1.15rem; }
+    .site-brand { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; letter-spacing: 0.01em; color: var(--text); text-decoration: none; white-space: nowrap; }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.8rem; list-style: none; padding: 0; }
+    .nav-links a { position: relative; color: var(--soft); text-decoration: none; font-size: 0.9rem; transition: color 0.3s var(--ease); }
+    .nav-links a::after { content: ""; position: absolute; left: 0; bottom: -4px; width: 100%; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease); }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    @media (max-width: 720px) { .nav-links { gap: 0.35rem 1.2rem; } .nav-links a { font-size: 0.85rem; } }
+
+    .hero { padding-block: clamp(4rem, 12vh, 8rem) clamp(3.5rem, 9vh, 6rem); border-bottom: 1px solid var(--hairline); }
+    .hero-layout { display: grid; gap: 3rem; align-items: center; }
+    @media (min-width: 960px) { .hero-layout { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 4.5rem; } }
+    .hero-copy { max-width: 38rem; }
+    .hero-name { font-family: var(--font-display); font-weight: 500; font-size: clamp(3rem, 8vw, 5.9rem); line-height: 1.04; letter-spacing: -0.025em; margin-bottom: 1.6rem; }
+    .hero-positioning { font-family: var(--font-display); font-weight: 300; font-size: clamp(1.2rem, 2.5vw, 1.6rem); line-height: 1.5; color: var(--soft); max-width: 40rem; margin-bottom: 2.6rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem 2.2rem; list-style: none; padding: 1.6rem 0 0; border-top: 1px solid var(--hairline); }
+    .portrait-card { width: 100%; max-width: 20rem; padding: 0.75rem; background: var(--surface); border: 1px solid var(--hairline); transition: border-color 0.4s var(--ease); }
+    @media (min-width: 960px) { .portrait-card { max-width: 24rem; justify-self: end; } }
+    .portrait-card img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--hairline); filter: saturate(0.68) brightness(0.97) contrast(1.02); transition: filter 0.5s var(--ease); }
+    .portrait-card:hover { border-color: var(--hairline-strong); }
+    .portrait-card:hover img { filter: none; }
+
+    .section { padding-block: clamp(3.8rem, 9vh, 6.5rem); border-bottom: 1px solid var(--hairline); }
+    .section:last-of-type { border-bottom: 0; }
+    .editorial { display: grid; gap: 1.2rem; }
+    @media (min-width: 900px) { .editorial { grid-template-columns: 4.5rem minmax(0, 1fr); gap: 2.5rem; } }
+    .section-index { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; color: var(--faint); border-top: 1px solid var(--hairline-strong); padding-top: 0.55rem; width: fit-content; margin-top: 0.5rem; }
+    .section-body { min-width: 0; }
+
+    .flagship-stack { display: grid; gap: 1.4rem; }
+    @media (min-width: 1000px) { .flagship-stack { grid-template-columns: 1fr 1fr; } .flagship--wide { grid-column: 1 / -1; } }
+    .flagship { background: var(--surface); border: 1px solid var(--hairline); padding: clamp(1.5rem, 4vw, 2.6rem); display: flex; flex-direction: column; gap: 1rem; transition: border-color 0.35s var(--ease), transform 0.35s var(--ease), box-shadow 0.35s var(--ease); }
+    .flagship:hover { border-color: var(--hairline-strong); transform: translateY(-3px); box-shadow: 0 24px 50px -30px rgba(0, 0, 0, 0.6); }
+    .flagship-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .flagship-category { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+    .flagship-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 3vw, 2.2rem); letter-spacing: -0.02em; line-height: 1.12; }
+    .flagship-title a { color: var(--text); text-decoration: none; transition: color 0.3s var(--ease); }
+    .flagship-title a:hover { color: var(--accent); }
+    .flagship-tagline { color: var(--muted); font-size: 1rem; max-width: 50rem; }
+    .flagship-highlights { list-style: none; padding: 0; display: grid; gap: 0.45rem; }
+    @media (min-width: 760px) { .flagship--wide .flagship-highlights { grid-template-columns: 1fr 1fr; column-gap: 2.5rem; } }
+    .flagship-highlights li { color: var(--soft); font-size: 0.93rem; padding-left: 1.1rem; position: relative; }
+    .flagship-highlights li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 0.45rem; height: 1px; background: var(--accent); }
+    .flagship-links { display: flex; flex-wrap: wrap; gap: 0.8rem 2rem; list-style: none; padding: 0.8rem 0 0; margin-top: auto; }
+
+    .work-list { list-style: none; padding: 0; border-top: 1px solid var(--hairline); }
+    .work-row { border-bottom: 1px solid var(--hairline); }
+    .work-link { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 0.4rem 1.5rem; padding: 1.15rem 0; text-decoration: none; transition: padding-left 0.3s var(--ease); }
+    @media (min-width: 860px) { .work-link { grid-template-columns: minmax(13rem, 1fr) 2fr 1.2rem; } }
+    .work-link:hover { padding-left: 0.5rem; }
+    .work-name { font-family: var(--font-display); font-size: 1.15rem; font-weight: 500; letter-spacing: -0.01em; color: var(--text); transition: color 0.3s var(--ease); }
+    .work-link:hover .work-name { color: var(--accent); }
+    .work-tagline { color: var(--muted); font-size: 0.9rem; }
+    @media (max-width: 859px) { .work-tagline { grid-column: 1 / -1; order: 3; } }
+    .work-arrow { color: var(--faint); justify-self: end; transition: color 0.3s var(--ease), transform 0.3s var(--ease); }
+    .work-link:hover .work-arrow { color: var(--accent); transform: translate(2px, -2px); }
+
+    .contact-intro { color: var(--muted); max-width: 34rem; margin: -0.4rem 0 1.8rem; }
+    .contact-list { list-style: none; padding: 0; border-top: 1px solid var(--hairline); max-width: 50rem; }
+    .contact-list li { border-bottom: 1px solid var(--hairline); }
+    .contact-link { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.15rem 0; color: var(--text); text-decoration: none; font-family: var(--font-display); font-size: 1.1rem; font-weight: 500; letter-spacing: -0.01em; transition: color 0.3s var(--ease), padding-left 0.3s var(--ease); overflow-wrap: anywhere; }
+    .contact-link .icon { color: var(--faint); transition: color 0.3s var(--ease), transform 0.3s var(--ease); }
+    .contact-link:hover { color: var(--accent); padding-left: 0.5rem; }
+    .contact-link:hover .icon { color: var(--accent); transform: translate(2px, -2px); }
+
+    .site-footer { padding-block: 3.5rem 3rem; background: var(--bg-deep); border-top: 1px solid var(--hairline); }
+    .footer-grid { display: grid; gap: 1.8rem; }
+    @media (min-width: 800px) { .footer-grid { grid-template-columns: 1fr auto; align-items: start; } }
+    .footer-name { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; letter-spacing: -0.01em; margin-bottom: 0.3rem; }
+    .footer-title { color: var(--muted); font-size: 0.85rem; }
+    .footer-links { display: flex; flex-direction: column; gap: 0.5rem; list-style: none; padding: 0; }
+    .footer-links a { color: var(--soft); text-decoration: none; font-size: 0.9rem; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: color 0.3s var(--ease), background-size 0.35s var(--ease); padding-bottom: 2px; }
+    .footer-links a:hover { color: var(--accent); background-size: 100% 1px; }
+
+    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.85s var(--ease), transform 0.85s var(--ease); }
+    .js .reveal.is-visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
     }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    main { max-width: 760px; margin: 0 auto; padding: 48px 16px 64px; }
-    h1 { font-size: 2rem; margin: 0 0 4px; }
-    h2 { font-size: 1.1rem; margin: 40px 0 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
-    h3 { font-size: 1.05rem; margin: 0 0 4px; }
-    p { margin: 0 0 8px; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .lead { color: var(--muted); }
-    .links { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; }
-    .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin-bottom: 12px; }
-    .card p { color: var(--muted); font-size: .95rem; }
-    .meta { font-size: .9rem; }
-    footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
   </style>
 </head>
 <body>
-<main>
-  <header>
-    <h1>Erik Paperniuk</h1>
-    <p class="lead">System integration and automation engineer: backend systems, AI agents, ERP/CRM automation, applied machine learning, and local LLM inference on Apple Silicon.</p>
-    <div class="links">
-      <a href="https://github.com/paperniuk">GitHub</a>
-      <a href="cv.html">CV</a>
-      <a href="mailto:erikpaperniuk@gmail.com">erikpaperniuk@gmail.com</a>
-    </div>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <nav class="site-nav container" aria-label="Primary navigation">
+      <a class="site-brand" href="./">Erik Paperniuk</a>
+      <ul class="nav-links">
+        <li><a href="#work">Projects</a></li>
+        <li><a href="#more">More work</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <h2>Local LLM inference</h2>
+  <main id="main-content">
 
-  <div class="card">
-    <h3><a href="https://github.com/paperniuk/splash">Splash for M1/M2 Macs</a></h3>
-    <p>A port of the Splash inference engine to M1 and M2 (Apple7/8 GPUs), with custom Metal kernels for matrix multiplication, attention, GGUF quantizations and the vision encoder, where upstream relies on Apple's MPP library. Runs Qwen3.8-27B, Qwen3.6-35B-A3B and Ternary Bonsai 2 with speculative decoding; long prompts are split into short GPU commands so long agent sessions do not abort. Prebuilt, one-line install.</p>
-    <p class="meta"><a href="https://github.com/paperniuk/splash/releases/tag/1.1.0-m1">Release 1.1.0-m1</a> · <a href="https://github.com/paperniuk/splash/tree/apple7-m1-kernels-1.1">Source</a> · <a href="https://github.com/paperniuk/splash/releases">All releases</a></p>
-  </div>
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow reveal">System Integration &amp; Automation Engineer</p>
+          <h1 id="hero-heading" class="hero-name reveal">Erik Paperniuk</h1>
+          <p class="hero-positioning reveal">I build backend systems, business automation and AI tools, and I run large language models locally on Apple Silicon, down to the GPU kernels.</p>
+          <ul class="hero-actions reveal" aria-label="Primary actions">
+            <li><a class="link-arrow" href="#work">View projects <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li>
+            <li><a class="link-arrow" href="https://github.com/paperniuk" rel="me">GitHub <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+            <li><a class="link-arrow" href="https://www.linkedin.com/in/paperniuk" rel="me">LinkedIn <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+            <li><a class="link-arrow" href="https://www.reddit.com/user/Erp4759/" rel="me">Reddit <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+            <li><a class="link-arrow" href="#contact">Contact <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li>
+          </ul>
+        </div>
+        <figure class="portrait-card reveal">
+          <img src="img/erik.jpg" width="460" height="460" alt="Portrait of Erik Paperniuk" loading="eager" fetchpriority="high" decoding="async">
+        </figure>
+      </div>
+    </section>
 
-  <div class="card">
-    <h3><a href="https://github.com/paperniuk/lmstudio-prism-bonsai">LM Studio + Ternary Bonsai 2</a></h3>
-    <p>Makes LM Studio load Ternary Bonsai 2 GGUF models (PQ2_0 / PTQ1_0) through Prism's llama.cpp fork, with a reasoning-effort selector. Linux and Windows, double-click install.</p>
-  </div>
+    <section class="section" id="work" aria-labelledby="work-heading">
+      <div class="container editorial">
+        <p class="section-index reveal" aria-hidden="true">01</p>
+        <div class="section-body">
+          <p class="eyebrow reveal">Selected work</p>
+          <h2 id="work-heading" class="section-heading reveal">Local LLM inference</h2>
 
-  <div class="card">
-    <h3><a href="https://github.com/paperniuk/omlx-prism-hadamard">oMLX + Prism Hadamard packs</a></h3>
-    <p>Makes oMLX load Prism Hadamard Qwen3.5 packs (Ternary Bonsai 2), plus a guide to adding an unrecognised architecture to mlx-vlm.</p>
-  </div>
+          <div class="flagship-stack">
+            <article class="flagship flagship--wide reveal">
+              <div class="flagship-meta">
+                <span class="badge">Release 1.1.0-m1</span>
+                <span class="flagship-category">Metal · C++ · Apple Silicon</span>
+              </div>
+              <h3 class="flagship-title"><a href="https://github.com/paperniuk/splash">Splash for M1/M2 Macs</a></h3>
+              <p class="flagship-tagline">A port of the Splash inference engine to M1 and M2 Macs. Upstream relies on Apple's MPP matrix library, which is emulated and hangs the GPU on Apple7/8, so this build ships its own Metal kernels.</p>
+              <ul class="flagship-highlights">
+                <li>Simdgroup-matrix kernels for matmul, attention, MoE experts and the vision encoder</li>
+                <li>GGUF models: Unsloth Qwen quantizations and Ternary Bonsai 2</li>
+                <li>Speculative decoding: about 70 tok/s on Qwen3.8-27B code on an M1 Max</li>
+                <li>Prefill split into ~5 s GPU commands, so long agent sessions do not abort</li>
+                <li>Ternary Bonsai 2 27B runs on 16 GB Macs</li>
+                <li>Prebuilt, one-line install, side by side with Homebrew's Splash</li>
+              </ul>
+              <ul class="flagship-links">
+                <li><a class="link-arrow" href="https://github.com/paperniuk/splash/releases/tag/1.1.0-m1">Release notes <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+                <li><a class="link-arrow" href="https://github.com/paperniuk/splash/tree/apple7-m1-kernels-1.1">Source <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+              </ul>
+            </article>
 
-  <h2>Automation and applied ML</h2>
+            <article class="flagship reveal">
+              <div class="flagship-meta">
+                <span class="badge">Installer</span>
+                <span class="flagship-category">LM Studio · llama.cpp</span>
+              </div>
+              <h3 class="flagship-title"><a href="https://github.com/paperniuk/lmstudio-prism-bonsai">LM Studio + Ternary Bonsai 2</a></h3>
+              <p class="flagship-tagline">Makes LM Studio load Ternary Bonsai 2 GGUF models (PQ2_0 and PTQ1_0) through Prism's llama.cpp fork, with a reasoning-effort selector. Linux and Windows, double-click install.</p>
+              <ul class="flagship-links">
+                <li><a class="link-arrow" href="https://github.com/paperniuk/lmstudio-prism-bonsai">Repository <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+              </ul>
+            </article>
 
-  <div class="card">
-    <h3><a href="https://github.com/paperniuk/chat-data-exporter">Chat Data Exporter</a></h3>
-    <p>A PyQt6 desktop application that extracts WhatsApp and Telegram contact information from thousands of websites.</p>
-  </div>
+            <article class="flagship reveal">
+              <div class="flagship-meta">
+                <span class="badge">Patch + guide</span>
+                <span class="flagship-category">oMLX · mlx-vlm</span>
+              </div>
+              <h3 class="flagship-title"><a href="https://github.com/paperniuk/omlx-prism-hadamard">oMLX + Prism Hadamard packs</a></h3>
+              <p class="flagship-tagline">Makes oMLX load Prism Hadamard Qwen3.5 packs (Ternary Bonsai 2), plus a guide to adding an unrecognised architecture to mlx-vlm.</p>
+              <ul class="flagship-links">
+                <li><a class="link-arrow" href="https://github.com/paperniuk/omlx-prism-hadamard">Repository <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <div class="card">
-    <h3><a href="https://github.com/paperniuk/moodle-pwa-plugin">Moodle PWA plugin</a></h3>
-    <p>A Moodle local plugin that makes a Moodle site installable as a PWA from Chrome, using the site's own logo.</p>
-  </div>
+    <section class="section" id="more" aria-labelledby="more-heading">
+      <div class="container editorial">
+        <p class="section-index reveal" aria-hidden="true">02</p>
+        <div class="section-body">
+          <p class="eyebrow reveal">Automation</p>
+          <h2 id="more-heading" class="section-heading reveal">More work</h2>
+          <ul class="work-list">
+            <li class="work-row reveal">
+              <a class="work-link" href="https://github.com/paperniuk/chat-data-exporter">
+                <span class="work-name">Chat Data Exporter</span>
+                <span class="work-tagline">PyQt6 desktop app that extracts WhatsApp and Telegram contacts from thousands of websites</span>
+                <svg class="icon work-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+              </a>
+            </li>
+            <li class="work-row reveal">
+              <a class="work-link" href="https://github.com/paperniuk/moodle-pwa-plugin">
+                <span class="work-name">Moodle PWA plugin</span>
+                <span class="work-tagline">Makes a Moodle site installable as a PWA from Chrome, using the site's own logo</span>
+                <svg class="icon work-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-  <footer>More on <a href="https://github.com/paperniuk?tab=repositories">github.com/paperniuk</a>.</footer>
-</main>
+    <section class="section" id="contact" aria-labelledby="contact-heading">
+      <div class="container editorial">
+        <p class="section-index reveal" aria-hidden="true">03</p>
+        <div class="section-body">
+          <p class="eyebrow reveal">Contact</p>
+          <h2 id="contact-heading" class="section-heading reveal">Get in touch</h2>
+          <p class="contact-intro reveal">For collaborations, integrations and engineering conversations.</p>
+          <ul class="contact-list">
+            <li class="reveal">
+              <a class="contact-link" href="mailto:erp4759@gmail.com"><span>erp4759@gmail.com</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+            </li>
+            <li class="reveal">
+              <a class="contact-link" href="https://github.com/paperniuk" rel="me"><span>github.com/paperniuk</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+            </li>
+            <li class="reveal">
+              <a class="contact-link" href="https://www.linkedin.com/in/paperniuk" rel="me"><span>LinkedIn</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+            </li>
+            <li class="reveal">
+              <a class="contact-link" href="https://www.reddit.com/user/Erp4759/" rel="me"><span>u/Erp4759 on Reddit</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-name">Erik Paperniuk</p>
+        <p class="footer-title">System Integration &amp; Automation Engineer</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/paperniuk" rel="me">Erik Paperniuk on LinkedIn</a></li>
+        <li><a href="https://www.reddit.com/user/Erp4759/" rel="me">u/Erp4759 on Reddit</a></li>
+        <li><a href="https://github.com/paperniuk?tab=repositories">All repositories</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+      document.documentElement.classList.add("js");
+      var items = document.querySelectorAll(".reveal");
+      var show = function (el) { el.classList.add("is-visible"); };
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+        items.forEach(show);
+        return;
+      }
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          window.setTimeout(function () { show(el); }, Number(el.dataset.revealDelay || 0));
+          observer.unobserve(el);
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+      var groups = new Map();
+      items.forEach(function (el) {
+        var count = groups.get(el.parentElement) || 0;
+        el.dataset.revealDelay = Math.min(count * 70, 420);
+        groups.set(el.parentElement, count + 1);
+        observer.observe(el);
+      });
+    })();
+  </script>
 </body>
 </html>
