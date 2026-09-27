@@ -1,11 +1,92 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Erik Paperniuk</title>
-  </head>
-  <body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Erik Paperniuk</title>
+  <meta name="description" content="Erik Paperniuk: system integration and automation engineer. Splash for M1/M2 Macs with custom Metal kernels, local LLM tooling for Ternary Bonsai 2, AI agents and applied ML.">
+  <link rel="canonical" href="https://paperniuk.github.io/">
+  <meta property="og:title" content="Erik Paperniuk">
+  <meta property="og:description" content="Splash for M1/M2 Macs, local LLM tooling, AI agents and applied ML.">
+  <meta property="og:url" content="https://paperniuk.github.io/">
+  <meta property="og:type" content="profile">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Erik Paperniuk",
+    "url": "https://paperniuk.github.io/",
+    "jobTitle": "System Integration & Automation Engineer",
+    "sameAs": ["https://github.com/paperniuk"]
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #fafaf9; --fg: #1c1917; --muted: #57534e; --line: #e7e5e4; --card: #ffffff; --accent: #0369a1;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #161514; --fg: #f5f5f4; --muted: #a8a29e; --line: #2e2c2a; --card: #1f1d1c; --accent: #7dd3fc; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 760px; margin: 0 auto; padding: 48px 16px 64px; }
+    h1 { font-size: 2rem; margin: 0 0 4px; }
+    h2 { font-size: 1.1rem; margin: 40px 0 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    h3 { font-size: 1.05rem; margin: 0 0 4px; }
+    p { margin: 0 0 8px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .lead { color: var(--muted); }
+    .links { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin-bottom: 12px; }
+    .card p { color: var(--muted); font-size: .95rem; }
+    .meta { font-size: .9rem; }
+    footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
     <h1>Erik Paperniuk</h1>
-    <p>s1123540.</p>
-  </body>
+    <p class="lead">System integration and automation engineer: backend systems, AI agents, ERP/CRM automation, applied machine learning, and local LLM inference on Apple Silicon.</p>
+    <div class="links">
+      <a href="https://github.com/paperniuk">GitHub</a>
+      <a href="cv.html">CV</a>
+      <a href="mailto:erikpaperniuk@gmail.com">erikpaperniuk@gmail.com</a>
+    </div>
+  </header>
+
+  <h2>Local LLM inference</h2>
+
+  <div class="card">
+    <h3><a href="https://github.com/paperniuk/splash">Splash for M1/M2 Macs</a></h3>
+    <p>A port of the Splash inference engine to M1 and M2 (Apple7/8 GPUs), with custom Metal kernels for matrix multiplication, attention, GGUF quantizations and the vision encoder, where upstream relies on Apple's MPP library. Runs Qwen3.8-27B, Qwen3.6-35B-A3B and Ternary Bonsai 2 with speculative decoding; long prompts are split into short GPU commands so long agent sessions do not abort. Prebuilt, one-line install.</p>
+    <p class="meta"><a href="https://github.com/paperniuk/splash/releases/tag/1.1.0-m1">Release 1.1.0-m1</a> · <a href="https://github.com/paperniuk/splash/tree/apple7-m1-kernels-1.1">Source</a> · <a href="https://github.com/paperniuk/splash/releases">All releases</a></p>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://github.com/paperniuk/lmstudio-prism-bonsai">LM Studio + Ternary Bonsai 2</a></h3>
+    <p>Makes LM Studio load Ternary Bonsai 2 GGUF models (PQ2_0 / PTQ1_0) through Prism's llama.cpp fork, with a reasoning-effort selector. Linux and Windows, double-click install.</p>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://github.com/paperniuk/omlx-prism-hadamard">oMLX + Prism Hadamard packs</a></h3>
+    <p>Makes oMLX load Prism Hadamard Qwen3.5 packs (Ternary Bonsai 2), plus a guide to adding an unrecognised architecture to mlx-vlm.</p>
+  </div>
+
+  <h2>Automation and applied ML</h2>
+
+  <div class="card">
+    <h3><a href="https://github.com/paperniuk/chat-data-exporter">Chat Data Exporter</a></h3>
+    <p>A PyQt6 desktop application that extracts WhatsApp and Telegram contact information from thousands of websites.</p>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://github.com/paperniuk/moodle-pwa-plugin">Moodle PWA plugin</a></h3>
+    <p>A Moodle local plugin that makes a Moodle site installable as a PWA from Chrome, using the site's own logo.</p>
+  </div>
+
+  <footer>More on <a href="https://github.com/paperniuk?tab=repositories">github.com/paperniuk</a>.</footer>
+</main>
+</body>
 </html>
