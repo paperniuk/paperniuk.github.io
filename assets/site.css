@@ -231,3 +231,4 @@ a { color: inherit; }
 .stars[hidden] { display: none; }
 .stars .icon { color: #e3b341; width: 0.9em; height: 0.9em; }
 .work-name .stars { margin-left: 0.7rem; font-weight: 400; }
+.stars .gh { color: var(--soft); width: 1.05em; height: 1.05em; margin-right: 0.1rem; }
