@@ -237,3 +237,7 @@ a { color: inherit; }
 .portrait-card img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; filter: saturate(0.7) brightness(0.97); transition: filter 0.5s var(--ease); }
 .portrait-card:hover { border-color: var(--hairline-strong); }
 .portrait-card:hover img { filter: none; }
+
+.callout { margin-top: 1.4rem; padding: 1rem 1.2rem; background: var(--accent-soft); border: 1px solid var(--accent-line); color: var(--text); }
+.callout p + p { margin-top: 0.3rem; }
+.callout-label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }

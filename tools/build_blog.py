@@ -125,6 +125,7 @@ def head(title, description, canonical, depth, extra=""):
       <a class="site-brand" href="{up}">Erik Paperniuk</a>
       <ul class="nav-links">
         <li><a href="{up}#work">Projects</a></li>
+        <li><a href="{up}#research">Research</a></li>
         <li><a href="{up}#benchmarks">Benchmarks</a></li>
         <li><a href="{up}blog/" aria-current="page">Writing</a></li>
         <li><a href="{up}#about">About</a></li>
@@ -270,7 +271,7 @@ def feed(posts):
 
 
 def sitemap(posts):
-    urls = [(f"{SITE}/", None), (f"{SITE}/blog/", None)] + [
+    urls = [(f"{SITE}/", None), (f"{SITE}/research/metafake/", None), (f"{SITE}/blog/", None)] + [
         (f"{SITE}/blog/{p['slug']}/", p["date"]) for p in posts
     ]
     rows = "".join(

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MetaFake: deepfake detection for the newest image generators · Erik Paperniuk</title>
+  <meta name="description" content="Work on keeping a fast deepfake detector accurate on images from the newest generators. To be presented at ECICE 2026.">
+  <link rel="canonical" href="https://paperniuk.github.io/research/metafake/">
+  <link rel="alternate" type="application/atom+xml" title="Erik Paperniuk, notes" href="https://paperniuk.github.io/blog/feed.xml">
+  <meta property="og:site_name" content="Erik Paperniuk">
+  <meta property="og:title" content="MetaFake: deepfake detection for the newest image generators">
+  <meta property="og:description" content="Work on keeping a fast deepfake detector accurate on images from the newest generators. To be presented at ECICE 2026.">
+  <meta property="og:url" content="https://paperniuk.github.io/research/metafake/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://paperniuk.github.io/img/erik.jpg">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2320242c'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial,sans-serif' font-weight='600' font-size='17' fill='%239cb6d8' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="../../fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <nav class="site-nav container" aria-label="Primary navigation">
+      <a class="site-brand" href="../../">Erik Paperniuk</a>
+      <ul class="nav-links">
+        <li><a href="../../#work">Projects</a></li>
+        <li><a href="../../#research" aria-current="page">Research</a></li>
+        <li><a href="../../#benchmarks">Benchmarks</a></li>
+        <li><a href="../../blog/">Writing</a></li>
+        <li><a href="../../#about">About</a></li>
+        <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main id="main-content" class="post-wrap">
+    <div class="container">
+      <header class="post-header">
+        <a class="back" href="../../#research">&larr; home</a>
+        <p class="eyebrow" style="margin:1.2rem 0 0">Research</p>
+        <h1>MetaFake: deepfake detection for the newest image generators</h1>
+        <p class="lede">Fast deepfake detectors were built for older generators and lose accuracy on the 2025 and 2026 ones. MetaFake is my work on closing that gap without giving up speed on a laptop.</p>
+        <div class="callout">
+          <p class="callout-label">Conference</p>
+          <p>I will present this work at <strong>ECICE 2026</strong>, the 8th Eurasia Conference on IoT, Communication and Engineering, in Yunlin, Taiwan, 13&ndash;15 November 2026.</p>
+        </div>
+        <ul class="tags" style="margin-top:1rem" aria-label="Keywords"><li class="tag">AI-generated image detection</li><li class="tag">deepfake detection</li><li class="tag">real-time detection</li></ul>
+      </header>
+
+      <article class="post">
+        <p>MetaFake extends LaDeDa (Cavia et al., 2024), a real-time detector that works well on images from the wild but is weaker on diffusion-transformer and autoregressive generators such as FLUX and SD 3.5. On unseen 2025 generators it raises zero-shot AUC from 78.3 to 88.7, and on Synthbuster against real photos from 72.0 to 81.0. Only a small part of the model is trained, so experiments run in seconds on an Apple M1 Max.</p>
+        <p>Details will follow after the conference.</p>
+      </article>
+      <div class="post-foot">
+        <a class="link-arrow" href="https://www.ecice.asia/">ECICE <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+        <a class="link-arrow" href="https://arxiv.org/abs/2406.09398">LaDeDa paper <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+        <a class="link-arrow" href="../../">Home <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-name">Erik Paperniuk</p>
+        <p class="footer-title">System Integration &amp; Automation Engineer</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="../../blog/">Writing</a></li>
+        <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/paperniuk" rel="me">LinkedIn</a></li>
+        <li><a href="https://www.reddit.com/user/Erp4759/" rel="me">u/Erp4759 on Reddit</a></li>
+        <li><a href="../../blog/feed.xml">Feed</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>
