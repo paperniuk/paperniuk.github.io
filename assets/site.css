@@ -51,6 +51,10 @@ a { color: inherit; }
 .hero { position: relative; padding-block: clamp(3.5rem, 10vh, 6.5rem) clamp(3rem, 7vh, 4.5rem); border-bottom: 1px solid var(--hairline); overflow: hidden; }
 .hero::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--hairline) 1px, transparent 1px), linear-gradient(90deg, var(--hairline) 1px, transparent 1px); background-size: 44px 44px; opacity: 0.22; -webkit-mask-image: radial-gradient(ellipse 70% 90% at 70% 0%, #000 0%, transparent 75%); mask-image: radial-gradient(ellipse 70% 90% at 70% 0%, #000 0%, transparent 75%); pointer-events: none; }
 .hero > .container { position: relative; }
+.social { display: flex; flex-wrap: wrap; gap: 0.6rem; list-style: none; padding: 0; margin: 0 0 2.2rem; }
+.social a { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; color: var(--soft); border: 1px solid var(--hairline-strong); background: var(--surface); transition: color 0.25s var(--ease), border-color 0.25s var(--ease), transform 0.25s var(--ease), background 0.25s var(--ease); }
+.social a:hover { color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft); transform: translateY(-2px); }
+.social svg { width: 1.25rem; height: 1.25rem; }
 .hero-name { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.5rem, 6.4vw, 4.8rem); line-height: 1.06; letter-spacing: -0.028em; max-width: 17ch; margin-bottom: 1.5rem; }
 .hero-name em { font-style: normal; color: var(--accent); }
 .hero-lede { font-size: clamp(1.05rem, 1.7vw, 1.22rem); line-height: 1.6; color: var(--soft); max-width: 44rem; margin-bottom: 2rem; }
