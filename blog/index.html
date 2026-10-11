@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Writing · Erik Paperniuk</title>
+  <meta name="description" content="Write-ups of Metal kernel and local inference work on Apple Silicon, with benchmarks.">
+  <link rel="canonical" href="https://paperniuk.github.io/blog/">
+  <link rel="alternate" type="application/atom+xml" title="Erik Paperniuk, notes" href="https://paperniuk.github.io/blog/feed.xml">
+  <meta property="og:site_name" content="Erik Paperniuk">
+  <meta property="og:title" content="Writing · Erik Paperniuk">
+  <meta property="og:description" content="Write-ups of Metal kernel and local inference work on Apple Silicon, with benchmarks.">
+  <meta property="og:url" content="https://paperniuk.github.io/blog/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2320242c'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial,sans-serif' font-weight='600' font-size='17' fill='%239cb6d8' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="../fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <nav class="site-nav container" aria-label="Primary navigation">
+      <a class="site-brand" href="../">Erik Paperniuk</a>
+      <ul class="nav-links">
+        <li><a href="../#work">Projects</a></li>
+        <li><a href="../#benchmarks">Benchmarks</a></li>
+        <li><a href="../blog/" aria-current="page">Writing</a></li>
+        <li><a href="../#about">About</a></li>
+        <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main id="main-content">
+    <div class="blog-head">
+      <div class="container">
+        <p class="eyebrow">Writing</p>
+        <h1 class="hero-name">Notes with the numbers</h1>
+        <p class="hero-lede" style="margin-bottom:0">Write-ups of the kernel and inference work, with the charts and the commands to reproduce them. Most of them started as posts on r/LocalLLaMA. <a class="link-arrow" href="feed.xml">Feed</a></p>
+      </div>
+    </div>
+    <div class="container" style="padding-block:1rem 4rem">
+      <ul class="post-list">
+        <li class="post-item"><a href="flash-next-on-m1-max/">
+          <p class="post-meta"><time datetime="2026-10-04">4 Oct 2026</time><span>20 min read</span><span>Metal, ds4, MoE, benchmarks</span></p>
+          <h2>Qwen3.8-Flash-Next on a 2021 M1 Max: 44 tok/s, and 35 tok/s with 400K tokens in the context</h2>
+          <p>A 126B mixture-of-experts model on a 64 GB laptop, with kernels written for the M1, and how little the speed falls as the context grows.</p>
+        </a></li>
+        <li class="post-item"><a href="splash-on-m1-part-2/">
+          <p class="post-meta"><time datetime="2026-09-26">26 Sep 2026</time><span>9 min read</span><span>Metal, Splash, benchmarks</span></p>
+          <h2>Splash on M1, part 2: 35B-A3B at 144 tok/s and a head-to-head with oMLX and MTPLX</h2>
+          <p>Attention and the MoE expert layers move off MPP too. Speed, GPU temperature, energy per token and memory against two MLX engines on the same Mac.</p>
+        </a></li>
+        <li class="post-item"><a href="splash-on-m1/">
+          <p class="post-meta"><time datetime="2026-09-24">24 Sep 2026</time><span>7 min read</span><span>Metal, Splash, M1</span></p>
+          <h2>Splash on a 2021 M1 Max: Qwen3.8-27B at 39 tok/s with custom Metal kernels</h2>
+          <p>Splash only runs on M3 and newer. I ported it to my M1 Max and rewrote the kernels that depended on bfloat16 and Apple&#x27;s MPP library, which doubled decode speed.</p>
+        </a></li>
+      </ul>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-name">Erik Paperniuk</p>
+        <p class="footer-title">System Integration &amp; Automation Engineer</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="../blog/">Writing</a></li>
+        <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/paperniuk" rel="me">LinkedIn</a></li>
+        <li><a href="https://www.reddit.com/user/Erp4759/" rel="me">u/Erp4759 on Reddit</a></li>
+        <li><a href="../blog/feed.xml">Feed</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,177 @@
+{
+ "q2": {
+  "label": "Qwen3.8-Flash-Next Q2_0, 35 GiB",
+  "points": [
+   {
+    "ctx": 3513,
+    "decode": 44.0,
+    "prefill": 328
+   },
+   {
+    "ctx": 22011,
+    "decode": 43.6,
+    "prefill": 344
+   },
+   {
+    "ctx": 28967,
+    "decode": 45.5,
+    "prefill": 334
+   },
+   {
+    "ctx": 67487,
+    "decode": 44.5,
+    "prefill": 335
+   },
+   {
+    "ctx": 93399,
+    "decode": 41.6,
+    "prefill": 333
+   },
+   {
+    "ctx": 127882,
+    "decode": 43.0,
+    "prefill": 320
+   },
+   {
+    "ctx": 163110,
+    "decode": 39.6,
+    "prefill": 322
+   },
+   {
+    "ctx": 189411,
+    "decode": 40.3,
+    "prefill": 308
+   },
+   {
+    "ctx": 220512,
+    "decode": 39.7,
+    "prefill": 315
+   },
+   {
+    "ctx": 256303,
+    "decode": 38.8,
+    "prefill": 313
+   },
+   {
+    "ctx": 286030,
+    "decode": 40.0,
+    "prefill": 308
+   },
+   {
+    "ctx": 318460,
+    "decode": 41.5,
+    "prefill": 305
+   },
+   {
+    "ctx": 347249,
+    "decode": 39.9,
+    "prefill": 300
+   },
+   {
+    "ctx": 383575,
+    "decode": 37.5,
+    "prefill": 299
+   },
+   {
+    "ctx": 398518,
+    "decode": 35.4,
+    "prefill": 292
+   }
+  ]
+ },
+ "iq3": {
+  "label": "Qwen3.8-Flash-Next IQ3_XXS, 44 GiB",
+  "points": [
+   {
+    "ctx": 3513,
+    "decode": 35.2,
+    "prefill": 241
+   },
+   {
+    "ctx": 21960,
+    "decode": 35.7,
+    "prefill": 288
+   },
+   {
+    "ctx": 29015,
+    "decode": 34.6,
+    "prefill": 274
+   },
+   {
+    "ctx": 66996,
+    "decode": 35.7,
+    "prefill": 281
+   },
+   {
+    "ctx": 93654,
+    "decode": 33.4,
+    "prefill": 282
+   },
+   {
+    "ctx": 127483,
+    "decode": 34.2,
+    "prefill": 278
+   },
+   {
+    "ctx": 163180,
+    "decode": 33.7,
+    "prefill": 273
+   },
+   {
+    "ctx": 189598,
+    "decode": 32.8,
+    "prefill": 267
+   },
+   {
+    "ctx": 220335,
+    "decode": 31.3,
+    "prefill": 264
+   },
+   {
+    "ctx": 248240,
+    "decode": 31.6,
+    "prefill": 263
+   },
+   {
+    "ctx": 259015,
+    "decode": 31.7,
+    "prefill": 258
+   }
+  ]
+ },
+ "ds": {
+  "label": "DeepSeek V4 Flash Q2, 81 GiB, streamed from SSD",
+  "points": [
+   {
+    "ctx": 3524,
+    "decode": 12.1,
+    "prefill": 94
+   },
+   {
+    "ctx": 18940,
+    "decode": 11.2,
+    "prefill": 47
+   },
+   {
+    "ctx": 29410,
+    "decode": 11.0,
+    "prefill": 40
+   },
+   {
+    "ctx": 66109,
+    "decode": 10.0,
+    "prefill": 43
+   },
+   {
+    "ctx": 94910,
+    "decode": 8.7,
+    "prefill": 38
+   },
+   {
+    "ctx": 127141,
+    "decode": 9.1,
+    "prefill": 34
+   }
+  ]
+ }
+}

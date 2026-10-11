@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Splash on M1, part 2: 35B-A3B at 144 tok/s and a head-to-head with oMLX and MTPLX · Erik Paperniuk</title>
+  <meta name="description" content="Attention and the MoE expert layers move off MPP too. Speed, GPU temperature, energy per token and memory against two MLX engines on the same Mac.">
+  <link rel="canonical" href="https://paperniuk.github.io/blog/splash-on-m1-part-2/">
+  <link rel="alternate" type="application/atom+xml" title="Erik Paperniuk, notes" href="https://paperniuk.github.io/blog/feed.xml">
+  <meta property="og:site_name" content="Erik Paperniuk">
+  <meta property="og:title" content="Splash on M1, part 2: 35B-A3B at 144 tok/s and a head-to-head with oMLX and MTPLX · Erik Paperniuk">
+  <meta property="og:description" content="Attention and the MoE expert layers move off MPP too. Speed, GPU temperature, energy per token and memory against two MLX engines on the same Mac.">
+  <meta property="og:url" content="https://paperniuk.github.io/blog/splash-on-m1-part-2/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://paperniuk.github.io/blog/img/splash-on-m1-part-2/12_overview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Splash on M1, part 2: 35B-A3B at 144 tok/s and a head-to-head with oMLX and MTPLX","datePublished":"2026-09-26","description":"Attention and the MoE expert layers move off MPP too. Speed, GPU temperature, energy per token and memory against two MLX engines on the same Mac.","image":"https://paperniuk.github.io/blog/img/splash-on-m1-part-2/12_overview.png","url":"https://paperniuk.github.io/blog/splash-on-m1-part-2/","author":{"@type":"Person","name":"Erik Paperniuk","url":"https://paperniuk.github.io/"}}</script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2320242c'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial,sans-serif' font-weight='600' font-size='17' fill='%239cb6d8' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="../../fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <nav class="site-nav container" aria-label="Primary navigation">
+      <a class="site-brand" href="../../">Erik Paperniuk</a>
+      <ul class="nav-links">
+        <li><a href="../../#work">Projects</a></li>
+        <li><a href="../../#benchmarks">Benchmarks</a></li>
+        <li><a href="../../blog/" aria-current="page">Writing</a></li>
+        <li><a href="../../#about">About</a></li>
+        <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main id="main-content" class="post-wrap">
+    <div class="container">
+      <header class="post-header">
+        <a class="back" href="../">&larr; all posts</a>
+        <h1>Splash on M1, part 2: 35B-A3B at 144 tok/s and a head-to-head with oMLX and MTPLX</h1>
+        <p class="lede">Attention and the MoE expert layers move off MPP too. Speed, GPU temperature, energy per token and memory against two MLX engines on the same Mac.</p>
+        <p class="post-meta" style="margin-top:1.2rem"><time datetime="2026-09-26">26 Sep 2026</time><span>9 min read</span></p>
+        <ul class="tags" style="margin-top:0.8rem" aria-label="Tags"><li class="tag">Metal</li><li class="tag">Splash</li><li class="tag">benchmarks</li></ul>
+      </header>
+      <article class="post">
+<p>A few days ago I posted my M1/M2 port of Splash (Inco's local inference engine, <a href="https://github.com/incoai/splash">https://github.com/incoai/splash</a>, officially M3+ only) with custom Metal kernels for the M1: <a href="https://www.reddit.com/r/LocalLLM/comments/1woq7cd">https://www.reddit.com/r/LocalLLM/comments/1woq7cd</a>. The benchmark prompts below are from npanj's splash-plus: <a href="https://github.com/npanj/splash-plus">https://github.com/npanj/splash-plus</a>. At the end of that post I said the bottleneck for agents had moved to long-context attention. This update replaces the last two parts that still used Apple's MPP matrix library on the M1: <strong>attention</strong> and the <strong>MoE expert layers</strong> of Qwen3.6-35B-A3B.</p>
+<p>TL;DR, same M1 Max 64 GB, previous release (1.0.2-m1) vs now:</p>
+<ul>
+<li><strong>Qwen3.6-35B-A3B:</strong> 99 -&gt; 144 tok/s on npanj's five-prompt benchmark (1.45x). Time to first token for a 38K prompt: 106 s -&gt; 72 s.</li>
+<li><strong>Qwen3.8-27B:</strong> short prompts unchanged (~40 tok/s), but at 51K context decode goes 20 -&gt; 25 tok/s, and a 38K prompt starts 47 s sooner (359 s -&gt; 312 s).</li>
+<li><strong>Attention itself:</strong> 1.85-1.95x faster per layer, for both the decode step and prompt processing, and the gain holds up to 176K context.</li>
+<li><strong>Against MLX engines on the same Mac (27B, same prompts):</strong> Splash decodes at 41.5 tok/s vs 25.9 (MTPLX) and 19.8 (oMLX), runs cooler and uses the least energy per token and the least memory. Prefill is where MLX is still ahead, especially on long prompts.</li>
+<li><strong>Real agent run (OpenCode):</strong> decode at 30-64K context ~30 tok/s on the 27B and ~75 on the 35B, still ~14 and ~45 tok/s at 128-157K.</li>
+<li><strong>Quality:</strong> 54/54 on a word-problem set for both models, before and after. Top-1 token agreement with the upstream kernels is 99.84% (27B) and 98.99% (35B), and every mismatch I inspected was a near-tie.</li>
+</ul>
+<p><img src="../img/splash-on-m1-part-2/12_overview.png" alt="Overview of speedups" width="1504" height="704" loading="lazy" decoding="async"></p>
+<p><strong>What changed.</strong> Same idea as last time: the M1 has fast matrix instructions (simdgroup_matrix) but no bfloat16, and Apple's MPP library is slow on it. So I wrote kernels that keep the whole tile in registers:</p>
+<ul>
+<li><strong>Attention:</strong> the 8-bit KV cache is turned into exact half values, queries into fp32, and the M1's 8x8 matrix instructions compute Q<em>K and P</em>V in fp32. One threadgroup handles 8 query positions for all query heads that share a KV head, so each KV block is read once for the whole group. The same tile now runs the DFlash verify step (8 draft tokens per request) and prompt processing.</li>
+<li><strong>MoE experts (35B-A3B, 256 experts, top 8):</strong> the same 4-bit register kernel as my dense-layer kernel, with the gate and up projections computed together and SiLU applied in the same pass. The expert layers of one 2048-token chunk went from 2.58 s to 1.00 s.</li>
+</ul>
+<p><strong>Benchmark 1: npanj's splash-plus prompts</strong> (their script unmodified, 250 tokens, default reasoning, ABBA, mean of 2 runs):</p>
+<p><img src="../img/splash-on-m1-part-2/20_npanj_new.png" alt="npanj's benchmark, 1.0.2-m1 vs now" width="1760" height="624" loading="lazy" decoding="async"></p>
+<p>The 27B barely moves here: these prompts are short, so there is little attention work, and its dense layers already used my kernels. The 35B gains 1.36-1.57x on every prompt because the expert layers are a big share of each decode step.</p>
+<p><strong>Benchmark 2: attention per layer</strong> (Splash's own attention-sweep benchmark, median of 7):</p>
+<p><img src="../img/splash-on-m1-part-2/13_verify_attention.png" alt="Verify attention per layer" width="1600" height="608" loading="lazy" decoding="async"></p>
+<p><img src="../img/splash-on-m1-part-2/14_prefill_attention.png" alt="Prefill attention per layer" width="1760" height="608" loading="lazy" decoding="async"></p>
+<p>At 176K context, one decode step of the 27B used to spend ~215 ms in attention and now ~116 ms.</p>
+<p><strong>Benchmark 3: time to first token</strong> (real server, cold prompt, no prefix cache):</p>
+<p><img src="../img/splash-on-m1-part-2/16_ttft.png" alt="Time to first token" width="1600" height="608" loading="lazy" decoding="async"></p>
+<p>For the 27B the saving grows with context, because it comes from attention.</p>
+<p><strong>Benchmark 4: a real agent session.</strong> I gave OpenCode one prompt, build a Three.js galaxy simulation in 7 steps, with reasoning medium, and ran it with each model on this build. Decode speed per turn as the context grew (turns with 500+ generated tokens; almost all prompt tokens came from Splash's prefix cache):</p>
+<p><img src="../img/splash-on-m1-part-2/21_opencode_sessions.png" alt="Real OpenCode sessions" width="1376" height="672" loading="lazy" decoding="async"></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Context</th>
+<th style="text-align: right;">Qwen3.8-27B</th>
+<th style="text-align: right;">Qwen3.6-35B-A3B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>30-64K</td>
+<td style="text-align: right;">~30 tok/s</td>
+<td style="text-align: right;">~75 tok/s</td>
+</tr>
+<tr>
+<td>64-96K</td>
+<td style="text-align: right;">~20 tok/s</td>
+<td style="text-align: right;">~43 tok/s</td>
+</tr>
+<tr>
+<td>96-128K</td>
+<td style="text-align: right;">~20 tok/s</td>
+<td style="text-align: right;">~51 tok/s</td>
+</tr>
+<tr>
+<td>128-157K</td>
+<td style="text-align: right;">~14 tok/s</td>
+<td style="text-align: right;">~45 tok/s</td>
+</tr>
+</tbody>
+</table></div>
+<p>Medians per range. Speed depends on the text as well as the context: whole-file writes of code draft well and run faster than short reasoning turns.</p>
+<p><strong>Benchmark 5: Splash vs oMLX vs MTPLX on the same M1 Max.</strong> Qwen3.8-27B, one engine at a time, each with its own fast setup for this model: Splash 1.0.2-m1.1 (4-bit + DFlash draft), oMLX with <code>Qwen3.8-27B-oQ4e-fp16-mtp</code> (4-bit + MTP), MTPLX with its <code>optimized-speed</code> profile. npanj's five prompts on a loop for 5 minutes, 250 tokens each, reasoning xhigh on all three (I checked that every engine gets the same prompt token counts, so the chat template and reasoning setting really match). Speed is measured on the client from the stream, the same way for all. Temperature, power and fan speed come from <code>macmon</code>; my fans follow a Macs Fan Control curve from 50 C to full speed at 80 C (GPU average).</p>
+<p><img src="../img/splash-on-m1-part-2/24_engines_decode_temp_energy.png" alt="Decode, GPU temperature and energy per token" width="2400" height="672" loading="lazy" decoding="async"></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: right;">Decode</th>
+<th style="text-align: right;">GPU temp while generating</th>
+<th style="text-align: right;">Time above 80 C</th>
+<th style="text-align: right;">Energy per token</th>
+<th style="text-align: right;">Engine memory after a 44K prompt (peak)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>oMLX</td>
+<td style="text-align: right;">19.8 tok/s</td>
+<td style="text-align: right;">77.7 C</td>
+<td style="text-align: right;">0%</td>
+<td style="text-align: right;">2.20 J</td>
+<td style="text-align: right;">23 GB (31)</td>
+</tr>
+<tr>
+<td>MTPLX</td>
+<td style="text-align: right;">25.9 tok/s</td>
+<td style="text-align: right;">78.8 C</td>
+<td style="text-align: right;">43%</td>
+<td style="text-align: right;">1.69 J</td>
+<td style="text-align: right;">35 GB (40)</td>
+</tr>
+<tr>
+<td><strong>Splash</strong></td>
+<td style="text-align: right;"><strong>41.5 tok/s</strong></td>
+<td style="text-align: right;"><strong>75.3 C</strong></td>
+<td style="text-align: right;"><strong>0%</strong></td>
+<td style="text-align: right;"><strong>1.06 J</strong></td>
+<td style="text-align: right;"><strong>21 GB (21)</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Memory: for oMLX and MTPLX, the process's physical footprint from macOS <code>footprint</code>; for Splash, its own count of every GPU allocation (weights, draft model, KV cache), because it maps the weights from disk and <code>footprint</code> does not see them. Splash reserves its memory up front, so its peak equals its current size.</p>
+<p><img src="../img/splash-on-m1-part-2/25_engines_temperature.png" alt="GPU temperature over each 5-minute run" width="1440" height="640" loading="lazy" decoding="async"></p>
+<p>Fans were at full speed with every engine. Splash stayed under 80 C the whole time while generating 1.6x faster, and none of the three throttled (GPU clock unchanged from start to end). Energy is package power integrated over the generation time, so faster and cooler shows up as fewer joules per token.</p>
+<p>A warning about MTPLX in this mode: the GPU average peaked at 89 C during prefill, and individual GPU sensors jumped to 95-97 C, with the fans already at full speed. At that point the cooling is working at its limit. I would not leave a Mac running like that overnight: sustained temperatures at the edge of what the cooling can handle are the kind of load that ages the chip faster. Whatever engine you use, I strongly recommend a fan curve (e.g. Macs Fan Control on the GPU cluster average) that reaches full speed at 80-85 C.</p>
+<p>Prefill is the honest weak spot:</p>
+<p><img src="../img/splash-on-m1-part-2/23_engines_prefill_memory.png" alt="Cold prefill and memory" width="1760" height="624" loading="lazy" decoding="async"></p>
+<p>On short prompts all three are within ~10%, but at 44K tokens the MLX engines are ~20% faster (125-127 vs 102 tok/s). I profiled it: 96% of a short prefill is the 4-bit matrix kernel, and at long context the rest is attention plus an effect of how the work is submitted to the GPU, which I found costs about 10% at 44K. That's the next thing to work on. Splash's own prefill checkpoints (it saves the model state every 4096 tokens so a long request can resume and a repeated prefix is reused) cost only ~1%.</p>
+<p>Even with the slower prefill, in practice, and especially in long agent sessions, Splash is right now the most stable engine I've used on this Mac: it's the one that gets to the end of the session.</p>
+<p>Why no LM Studio / llama.cpp in the table: with the GGUF build of this model I get 14-15 tok/s on the first prompt and 7-8 tok/s once a session gets longer. That's so far behind that there was no point in a full run.</p>
+<p><strong>Quality.</strong> I dumped the model's next-token probabilities on the same greedy prompts for each build and compared them position by position:</p>
+<p><img src="../img/splash-on-m1-part-2/18_quality.png" alt="Top-1 agreement and KL" width="1760" height="608" loading="lazy" decoding="async"></p>
+<p>The 35B is about 10x more sensitive than the 27B to any change in rounding, because a tiny difference can flip which of the 256 experts gets picked. Even my earlier kernels, before the MoE change, already moved it by 1.5e-3. Every differing top token I checked was a near-tie (e.g. 0.438 vs 0.438). On 54 physics and arithmetic word problems with answers computed in Python, both models get 54/54 on both the upstream kernels and mine, in about half the time (the 35B upstream run also wrote the probability dump, so part of its gap is disk I/O):</p>
+<p><img src="../img/splash-on-m1-part-2/17_eval.png" alt="54-task eval" width="1088" height="656" loading="lazy" decoding="async"></p>
+<p><strong>Try it:</strong></p>
+<pre><code class="language-bash">curl -fsSL https://github.com/paperniuk/splash/releases/download/1.0.2-m1.1/install-m1.sh | sh
+splash-m1 serve --model incoai/Qwen3.6-35B-A3B-Splash
+</code></pre>
+<p>It installs as <code>splash-m1</code> next to Homebrew's <code>splash</code>, and models are shared with it. Tested on an M1 Max. M1 Pro/Ultra and M2 use the same code path; reports welcome.</p>
+<h2>Links</h2>
+<ul>
+<li>My M1/M2 port: <a href="https://github.com/paperniuk/splash">https://github.com/paperniuk/splash</a> (branch <code>apple7-m1-kernels</code>, releases on the Releases page)</li>
+<li>Splash by Inco: <a href="https://github.com/incoai/splash">https://github.com/incoai/splash</a></li>
+<li>npanj's splash-plus benchmark: <a href="https://github.com/npanj/splash-plus">https://github.com/npanj/splash-plus</a></li>
+</ul>
+<p>This is an unofficial community port: the engine, the models and the draft models are Inco's. Thanks to npanj for the benchmark, and to everyone who tested the first release, sent logs and reported bugs; the higher default output limit in this release came from one of those reports. If this is useful to you, please star all three repos: the original Splash, npanj's benchmark and the port.</p>
+      </article>
+      <div class="post-foot">
+        <a class="link-arrow" href="https://github.com/paperniuk">GitHub <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+        
+        <a class="link-arrow" href="../">All posts <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-name">Erik Paperniuk</p>
+        <p class="footer-title">System Integration &amp; Automation Engineer</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="../../blog/">Writing</a></li>
+        <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/paperniuk" rel="me">LinkedIn</a></li>
+        <li><a href="https://www.reddit.com/user/Erp4759/" rel="me">u/Erp4759 on Reddit</a></li>
+        <li><a href="../../blog/feed.xml">Feed</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

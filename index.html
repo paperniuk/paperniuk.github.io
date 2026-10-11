@@ -3,14 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Erik Paperniuk · Open-source projects</title>
-  <meta name="description" content="Open-source work by Erik Paperniuk: Splash for M1/M2 Macs with custom Metal kernels, local LLM tooling for Ternary Bonsai 2, and automation tools.">
+  <title>Erik Paperniuk · System Integration &amp; Automation Engineer</title>
+  <meta name="description" content="Erik Paperniuk, system integration and automation engineer. Projects include Splash for M1/M2 Macs, Qwen3.8-Flash-Next at 44 tok/s on an M1 Max, and automation tools, with benchmarks and write-ups.">
   <link rel="canonical" href="https://paperniuk.github.io/">
+  <link rel="alternate" type="application/atom+xml" title="Erik Paperniuk, notes" href="https://paperniuk.github.io/blog/feed.xml">
 
   <meta property="og:type" content="profile">
   <meta property="og:site_name" content="Erik Paperniuk">
-  <meta property="og:title" content="Erik Paperniuk · Open-source projects">
-  <meta property="og:description" content="Splash for M1/M2 Macs, local LLM tooling and automation tools.">
+  <meta property="og:title" content="Erik Paperniuk · System Integration &amp; Automation Engineer">
+  <meta property="og:description" content="Projects, benchmarks and write-ups: Metal kernels for local LLM inference on Apple Silicon, automation tools, applied ML.">
   <meta property="og:url" content="https://paperniuk.github.io/">
   <meta property="og:image" content="https://paperniuk.github.io/img/erik.jpg">
   <meta property="og:image:alt" content="Portrait of Erik Paperniuk">
@@ -32,123 +33,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2320242c'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial,sans-serif' font-weight='600' font-size='17' fill='%239cb6d8' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
   <link rel="preload" href="fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-
-  <style>
-    @font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("fonts/space-grotesk-var-latin.woff2") format("woff2"); }
-    @font-face { font-family: "Inter"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/inter-var-latin.woff2") format("woff2"); }
-
-    :root {
-      --bg: #20242c; --bg-deep: #1b1f26; --surface: #272c35;
-      --text: #eceef0; --soft: #c2c7cf; --muted: #9aa1ac; --faint: #8d94a0;
-      --hairline: #343a45; --hairline-strong: #484f5c;
-      --accent: #9cb6d8; --accent-soft: rgba(156, 182, 216, 0.12); --accent-line: rgba(156, 182, 216, 0.4);
-      --font-display: "Space Grotesk", "Inter", "Helvetica Neue", system-ui, -apple-system, sans-serif;
-      --font-body: "Inter", "Helvetica Neue", "Segoe UI", system-ui, -apple-system, sans-serif;
-      --container: 74rem;
-      --ease: cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 1rem; line-height: 1.65; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-    ::selection { background: var(--accent); color: var(--bg); }
-    h1, h2, h3, p, ul, figure { margin: 0; }
-    .container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: 1rem; }
-    @media (min-width: 768px) { .container { padding-inline: 3rem; } }
-    .icon { width: 0.95em; height: 0.95em; flex: none; display: inline-block; vertical-align: -0.1em; }
-    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-    .skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 100; background: var(--accent); color: var(--bg); font-size: 0.85rem; font-weight: 500; padding: 0.6rem 1rem; transition: top 0.2s var(--ease); }
-    .skip-link:focus-visible { top: 1rem; }
-
-    .eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; }
-    .section-heading { font-family: var(--font-display); font-weight: 500; font-size: clamp(2rem, 4.5vw, 3.1rem); letter-spacing: -0.02em; line-height: 1.12; margin-bottom: 1.8rem; }
-    .link-arrow { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text); font-size: 0.95rem; font-weight: 500; text-decoration: none; padding-bottom: 2px; background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: color 0.3s var(--ease), background-size 0.3s var(--ease); }
-    .link-arrow .icon { transition: transform 0.3s var(--ease); }
-    .link-arrow:hover { color: var(--accent); background-size: 0% 1px; }
-    .link-arrow:hover .icon { transform: translateX(3px); }
-    .badge { display: inline-block; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-line); border-radius: 99px; padding: 0.32rem 0.85rem; }
-
-    .site-header { border-bottom: 1px solid var(--hairline); background: rgba(32, 36, 44, 0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 50; }
-    .site-nav { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; row-gap: 0.45rem; column-gap: 2rem; padding-block: 1.15rem; }
-    .site-brand { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; letter-spacing: 0.01em; color: var(--text); text-decoration: none; white-space: nowrap; }
-    .nav-links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.8rem; list-style: none; padding: 0; }
-    .nav-links a { position: relative; color: var(--soft); text-decoration: none; font-size: 0.9rem; transition: color 0.3s var(--ease); }
-    .nav-links a::after { content: ""; position: absolute; left: 0; bottom: -4px; width: 100%; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease); }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-links a:hover::after { transform: scaleX(1); }
-    @media (max-width: 720px) { .nav-links { gap: 0.35rem 1.2rem; } .nav-links a { font-size: 0.85rem; } }
-
-    .hero { padding-block: clamp(4rem, 12vh, 8rem) clamp(3.5rem, 9vh, 6rem); border-bottom: 1px solid var(--hairline); }
-    .hero-layout { display: grid; gap: 3rem; align-items: center; }
-    @media (min-width: 960px) { .hero-layout { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 4.5rem; } }
-    .hero-copy { max-width: 38rem; }
-    .hero-name { font-family: var(--font-display); font-weight: 500; font-size: clamp(3rem, 8vw, 5.9rem); line-height: 1.04; letter-spacing: -0.025em; margin-bottom: 1.6rem; }
-    .hero-positioning { font-family: var(--font-display); font-weight: 300; font-size: clamp(1.2rem, 2.5vw, 1.6rem); line-height: 1.5; color: var(--soft); max-width: 40rem; margin-bottom: 2.6rem; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem 2.2rem; list-style: none; padding: 1.6rem 0 0; border-top: 1px solid var(--hairline); }
-    .portrait-card { width: 100%; max-width: 20rem; padding: 0.75rem; background: var(--surface); border: 1px solid var(--hairline); transition: border-color 0.4s var(--ease); }
-    @media (min-width: 960px) { .portrait-card { max-width: 24rem; justify-self: end; } }
-    .portrait-card img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--hairline); filter: saturate(0.68) brightness(0.97) contrast(1.02); transition: filter 0.5s var(--ease); }
-    .portrait-card:hover { border-color: var(--hairline-strong); }
-    .portrait-card:hover img { filter: none; }
-
-    .section { padding-block: clamp(3.8rem, 9vh, 6.5rem); border-bottom: 1px solid var(--hairline); }
-    .section:last-of-type { border-bottom: 0; }
-    .editorial { display: grid; gap: 1.2rem; }
-    @media (min-width: 900px) { .editorial { grid-template-columns: 4.5rem minmax(0, 1fr); gap: 2.5rem; } }
-    .section-index { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; color: var(--faint); border-top: 1px solid var(--hairline-strong); padding-top: 0.55rem; width: fit-content; margin-top: 0.5rem; }
-    .section-body { min-width: 0; }
-
-    .flagship-stack { display: grid; gap: 1.4rem; }
-    @media (min-width: 1000px) { .flagship-stack { grid-template-columns: 1fr 1fr; } .flagship--wide { grid-column: 1 / -1; } }
-    .flagship { background: var(--surface); border: 1px solid var(--hairline); padding: clamp(1.5rem, 4vw, 2.6rem); display: flex; flex-direction: column; gap: 1rem; transition: border-color 0.35s var(--ease), transform 0.35s var(--ease), box-shadow 0.35s var(--ease); }
-    .flagship:hover { border-color: var(--hairline-strong); transform: translateY(-3px); box-shadow: 0 24px 50px -30px rgba(0, 0, 0, 0.6); }
-    .flagship-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-    .flagship-category { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
-    .flagship-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 3vw, 2.2rem); letter-spacing: -0.02em; line-height: 1.12; }
-    .flagship-title a { color: var(--text); text-decoration: none; transition: color 0.3s var(--ease); }
-    .flagship-title a:hover { color: var(--accent); }
-    .flagship-tagline { color: var(--muted); font-size: 1rem; max-width: 50rem; }
-    .flagship-highlights { list-style: none; padding: 0; display: grid; gap: 0.45rem; }
-    @media (min-width: 760px) { .flagship--wide .flagship-highlights { grid-template-columns: 1fr 1fr; column-gap: 2.5rem; } }
-    .flagship-highlights li { color: var(--soft); font-size: 0.93rem; padding-left: 1.1rem; position: relative; }
-    .flagship-highlights li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 0.45rem; height: 1px; background: var(--accent); }
-    .flagship-links { display: flex; flex-wrap: wrap; gap: 0.8rem 2rem; list-style: none; padding: 0.8rem 0 0; margin-top: auto; }
-
-    .work-list { list-style: none; padding: 0; border-top: 1px solid var(--hairline); }
-    .work-row { border-bottom: 1px solid var(--hairline); }
-    .work-link { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 0.4rem 1.5rem; padding: 1.15rem 0; text-decoration: none; transition: padding-left 0.3s var(--ease); }
-    @media (min-width: 860px) { .work-link { grid-template-columns: minmax(13rem, 1fr) 2fr 1.2rem; } }
-    .work-link:hover { padding-left: 0.5rem; }
-    .work-name { font-family: var(--font-display); font-size: 1.15rem; font-weight: 500; letter-spacing: -0.01em; color: var(--text); transition: color 0.3s var(--ease); }
-    .work-link:hover .work-name { color: var(--accent); }
-    .work-tagline { color: var(--muted); font-size: 0.9rem; }
-    @media (max-width: 859px) { .work-tagline { grid-column: 1 / -1; order: 3; } }
-    .work-arrow { color: var(--faint); justify-self: end; transition: color 0.3s var(--ease), transform 0.3s var(--ease); }
-    .work-link:hover .work-arrow { color: var(--accent); transform: translate(2px, -2px); }
-
-    .contact-intro { color: var(--muted); max-width: 34rem; margin: -0.4rem 0 1.8rem; }
-    .contact-list { list-style: none; padding: 0; border-top: 1px solid var(--hairline); max-width: 50rem; }
-    .contact-list li { border-bottom: 1px solid var(--hairline); }
-    .contact-link { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.15rem 0; color: var(--text); text-decoration: none; font-family: var(--font-display); font-size: 1.1rem; font-weight: 500; letter-spacing: -0.01em; transition: color 0.3s var(--ease), padding-left 0.3s var(--ease); overflow-wrap: anywhere; }
-    .contact-link .icon { color: var(--faint); transition: color 0.3s var(--ease), transform 0.3s var(--ease); }
-    .contact-link:hover { color: var(--accent); padding-left: 0.5rem; }
-    .contact-link:hover .icon { color: var(--accent); transform: translate(2px, -2px); }
-
-    .site-footer { padding-block: 3.5rem 3rem; background: var(--bg-deep); border-top: 1px solid var(--hairline); }
-    .footer-grid { display: grid; gap: 1.8rem; }
-    @media (min-width: 800px) { .footer-grid { grid-template-columns: 1fr auto; align-items: start; } }
-    .footer-name { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; letter-spacing: -0.01em; margin-bottom: 0.3rem; }
-    .footer-title { color: var(--muted); font-size: 0.85rem; }
-    .footer-links { display: flex; flex-direction: column; gap: 0.5rem; list-style: none; padding: 0; }
-    .footer-links a { color: var(--soft); text-decoration: none; font-size: 0.9rem; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: color 0.3s var(--ease), background-size 0.35s var(--ease); padding-bottom: 2px; }
-    .footer-links a:hover { color: var(--accent); background-size: 100% 1px; }
-
-    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.85s var(--ease), transform 0.85s var(--ease); }
-    .js .reveal.is-visible { opacity: 1; transform: none; }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -158,8 +43,9 @@
       <a class="site-brand" href="./">Erik Paperniuk</a>
       <ul class="nav-links">
         <li><a href="#work">Projects</a></li>
-        <li><a href="#more">More work</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#benchmarks">Benchmarks</a></li>
+        <li><a href="blog/">Writing</a></li>
+        <li><a href="#about">About</a></li>
         <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
       </ul>
     </nav>
@@ -168,22 +54,15 @@
   <main id="main-content">
 
     <section class="hero" aria-labelledby="hero-heading">
-      <div class="container hero-layout">
-        <div class="hero-copy">
-          <p class="eyebrow reveal">System Integration &amp; Automation Engineer</p>
-          <h1 id="hero-heading" class="hero-name reveal">Erik Paperniuk</h1>
-          <p class="hero-positioning reveal">I build backend systems, business automation and AI tools, and I run large language models locally on Apple Silicon, down to the GPU kernels.</p>
-          <ul class="hero-actions reveal" aria-label="Primary actions">
-            <li><a class="link-arrow" href="#work">View projects <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li>
-            <li><a class="link-arrow" href="https://github.com/paperniuk" rel="me">GitHub <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
-            <li><a class="link-arrow" href="https://www.linkedin.com/in/paperniuk" rel="me">LinkedIn <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
-            <li><a class="link-arrow" href="https://www.reddit.com/user/Erp4759/" rel="me">Reddit <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
-            <li><a class="link-arrow" href="#contact">Contact <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li>
-          </ul>
-        </div>
-        <figure class="portrait-card reveal">
-          <img src="img/erik.jpg" width="460" height="460" alt="Portrait of Erik Paperniuk" loading="eager" fetchpriority="high" decoding="async">
-        </figure>
+      <div class="container">
+        <p class="eyebrow">System Integration &amp; Automation Engineer</p>
+        <h1 id="hero-heading" class="hero-name">Erik Paperniuk</h1>
+        <p class="hero-lede">I work on backend systems, automation tools and applied machine learning. Recently that has included a lot of GPU kernels for running language models locally on Apple Silicon. Below are some of the projects, with the code and the numbers.</p>
+        <ul class="hero-actions" aria-label="Primary actions">
+          <li><a class="link-arrow" href="#work">Projects <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li>
+          <li><a class="link-arrow" href="blog/">Writing <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li>
+          <li><a class="link-arrow" href="https://github.com/paperniuk" rel="me">GitHub <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+        </ul>
       </div>
     </section>
 
@@ -191,28 +70,54 @@
       <div class="container editorial">
         <p class="section-index reveal" aria-hidden="true">01</p>
         <div class="section-body">
-          <p class="eyebrow reveal">Selected work</p>
-          <h2 id="work-heading" class="section-heading reveal">Local LLM inference</h2>
+          <p class="eyebrow reveal">Open source</p>
+          <h2 id="work-heading" class="section-heading reveal">Projects</h2>
+          <p class="section-intro reveal">The first two are forks: the engines are Inco's Splash and antirez's ds4, and my part is making them run well on M1 and M2. Everything here is public.</p>
 
           <div class="flagship-stack">
             <article class="flagship flagship--wide reveal">
               <div class="flagship-meta">
-                <span class="badge">Release 1.1.0-m1</span>
-                <span class="flagship-category">Metal · C++ · Apple Silicon</span>
+                <span class="badge">Fork of Inco's Splash</span>
+                <span class="flagship-category">Metal · C++ · Apple7/8 GPUs</span>
               </div>
-              <h3 class="flagship-title"><a href="https://github.com/paperniuk/splash">Splash for M1/M2 Macs</a></h3>
-              <p class="flagship-tagline">A port of the Splash inference engine to M1 and M2 Macs. Upstream relies on Apple's MPP matrix library, which is emulated and hangs the GPU on Apple7/8, so this build ships its own Metal kernels.</p>
+              <h3 class="flagship-title"><a href="https://github.com/paperniuk/splash">Splash for M1 and M2</a></h3>
+              <p class="flagship-tagline">Upstream Splash needs an M3 or newer. Its kernels use bfloat16, which the M1 has no hardware for, and Apple's MPP matrix library, which reaches about a third of the GPU's peak there. I rewrote those parts to use formats the M1 runs natively.</p>
               <ul class="flagship-highlights">
-                <li>Simdgroup-matrix kernels for matmul, attention, MoE experts and the vision encoder</li>
-                <li>GGUF models: Unsloth Qwen quantizations and Ternary Bonsai 2</li>
-                <li>Speculative decoding: about 70 tok/s on Qwen3.8-27B code on an M1 Max</li>
-                <li>Prefill split into ~5 s GPU commands, so long agent sessions do not abort</li>
-                <li>Ternary Bonsai 2 27B runs on 16 GB Macs</li>
-                <li>Prebuilt, one-line install, side by side with Homebrew's Splash</li>
+                <li><b>2.1×</b> decode on npanj's five-prompt benchmark, 18.9 to 39.1 tok/s on the same Mac</li>
+                <li><b>7.4 TFLOPS</b> prefill matmul, up from 2.4 to 3.5 through MPP</li>
+                <li>4-bit weights turned into exact half values with a bit trick, products and sums stay in fp32</li>
+                <li>Found a split-K reduction reading through a non-coherent cache that made the fastest decode path print garbage on M1</li>
+                <li>Verification kernel unpacks each weight once for all parallel requests: 18 to 65 tok/s with four requests</li>
+                <li>35B-A3B at 144 tok/s, and the Neural Engine prefill from upstream 1.3 works on M1/M2 too</li>
               </ul>
+              <ul class="tags" aria-label="Stack"><li class="tag">simdgroup_matrix</li><li class="tag">Metal</li><li class="tag">speculative decoding</li><li class="tag">GGUF / MLX 4-bit</li></ul>
               <ul class="flagship-links">
-                <li><a class="link-arrow" href="https://github.com/paperniuk/splash/releases/tag/1.1.0-m1">Release notes <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
-                <li><a class="link-arrow" href="https://github.com/paperniuk/splash/tree/apple7-m1-kernels-1.1">Source <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+                <li><a class="link-arrow" href="https://github.com/paperniuk/splash/releases">Releases <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+                <li><a class="link-arrow" href="https://github.com/paperniuk/splash">Source <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+                <li><a class="link-arrow" href="blog/splash-on-m1/">How it works <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li>
+              </ul>
+            </article>
+
+            <article class="flagship flagship--wide reveal">
+              <div class="flagship-meta">
+                <span class="badge">Fork of antirez/ds4</span>
+                <span class="flagship-category">C · Metal · Apple Silicon, 64 GB and up</span>
+              </div>
+              <h3 class="flagship-title"><a href="https://github.com/paperniuk/ds4">dstar: Qwen3.8-Flash-Next on a Mac</a></h3>
+              <p class="flagship-tagline">A launcher and a set of Metal kernels that run ISTA-DASLab's small quants of a 126B mixture-of-experts model (6.7B active) with the full 262K context, MTP and vision, behind an OpenAI and Anthropic compatible server.</p>
+              <ul class="flagship-highlights">
+                <li><b>44 tok/s</b> at 4K, <b>35.4</b> at 398K tokens of context, mostly the same code on every Apple GPU</li>
+                <li>Metal decoders for every quant type in the files, each checked bit-exact against the CPU</li>
+                <li>A 95 GiB n-gram table is never loaded: the 16 rows a token needs are read from the SSD</li>
+                <li>Indexer scorer rewritten for the M1: decode at 128K went from 23.8 to 33.8 tok/s, byte-identical output</li>
+                <li>Server keeps state at the last turn marker, so a retried agent turn on 31K tokens takes 0.3 s instead of 109 s</li>
+                <li>DeepSeek V4 Flash (81 GiB) streamed from the SSD on a 64 GB Mac at 12 tok/s</li>
+              </ul>
+              <ul class="tags" aria-label="Stack"><li class="tag">C</li><li class="tag">Metal</li><li class="tag">MTP</li><li class="tag">MoE</li><li class="tag">OpenCode / Claude Code compatible</li></ul>
+              <ul class="flagship-links">
+                <li><a class="link-arrow" href="https://github.com/paperniuk/ds4">Source <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+                <li><a class="link-arrow" href="https://github.com/paperniuk/ds4/releases/latest">Prebuilt release <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+                <li><a class="link-arrow" href="blog/flash-next-on-m1-max/">Benchmarks and write-up <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></li>
               </ul>
             </article>
 
@@ -248,8 +153,8 @@
       <div class="container editorial">
         <p class="section-index reveal" aria-hidden="true">02</p>
         <div class="section-body">
-          <p class="eyebrow reveal">Automation</p>
-          <h2 id="more-heading" class="section-heading reveal">More work</h2>
+          <p class="eyebrow reveal">Other projects</p>
+          <h2 id="more-heading" class="section-heading reveal">Automation and applied ML</h2>
           <ul class="work-list">
             <li class="work-row reveal">
               <a class="work-link" href="https://github.com/paperniuk/chat-data-exporter">
@@ -265,32 +170,164 @@
                 <svg class="icon work-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
               </a>
             </li>
+            <li class="work-row reveal">
+              <a class="work-link" href="https://github.com/paperniuk/InnoCell">
+                <span class="work-name">InnoCell</span>
+                <span class="work-tagline">Cervical cell detection and classification with YOLOv9 and attention mechanisms</span>
+                <svg class="icon work-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
     </section>
 
-    <section class="section" id="contact" aria-labelledby="contact-heading">
+    <section class="section" id="benchmarks" aria-labelledby="benchmarks-heading">
       <div class="container editorial">
         <p class="section-index reveal" aria-hidden="true">03</p>
         <div class="section-body">
-          <p class="eyebrow reveal">Contact</p>
-          <h2 id="contact-heading" class="section-heading reveal">Get in touch</h2>
-          <p class="contact-intro reveal">For collaborations, integrations and engineering conversations.</p>
-          <ul class="contact-list">
-            <li class="reveal">
-              <a class="contact-link" href="mailto:erp4759@gmail.com"><span>erp4759@gmail.com</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          <p class="eyebrow reveal">Benchmarks</p>
+          <h2 id="benchmarks-heading" class="section-heading reveal">Local inference numbers</h2>
+          <p class="section-intro reveal">Everything is measured on one M1 Max with 64 GB. Decode is limited by memory bandwidth and prefill by matrix throughput, so the work is getting each close to what the chip can do without changing what the model says.</p>
+
+          <div class="panel reveal">
+            <div class="panel-head">
+              <div>
+                <h3 class="panel-title">Speed while the context fills up</h3>
+                <p class="panel-sub">One chat grown to its full context on an M1 Max with 64 GB, reasoning xhigh, each turn adds about 30K tokens of C source. MTP speculative decoding is on for the Qwen runs.</p>
+              </div>
+              <div class="seg" role="group" aria-label="Metric">
+                <button type="button" data-metric="decode" aria-pressed="true">decode</button>
+                <button type="button" data-metric="prefill" aria-pressed="false">prefill</button>
+              </div>
+            </div>
+            <div class="chart-wrap"><div id="depth-chart"></div></div>
+            <ul class="legend" id="depth-legend" aria-label="Series"></ul>
+            <div class="sr-only"><table>
+              <caption>Decode speed in tokens per second against context size</caption>
+              <thead><tr><th>Context</th><th>Q2_0</th><th>IQ3_XXS</th><th>DeepSeek V4 Flash</th></tr></thead>
+              <tbody>
+                <tr><td>4K</td><td>44.0</td><td>35.2</td><td>12.1</td></tr>
+                <tr><td>128K</td><td>43.0</td><td>34.2</td><td>9.1</td></tr>
+                <tr><td>256K</td><td>38.8</td><td>31.7 (at 259K)</td><td>not run</td></tr>
+                <tr><td>398K</td><td>35.4</td><td>not run</td><td>not run</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+          <script type="application/json" id="depth-data">{"q2":{"label":"Qwen3.8-Flash-Next Q2_0, 35 GiB","points":[{"ctx":3513,"decode":44.0,"prefill":328},{"ctx":22011,"decode":43.6,"prefill":344},{"ctx":28967,"decode":45.5,"prefill":334},{"ctx":67487,"decode":44.5,"prefill":335},{"ctx":93399,"decode":41.6,"prefill":333},{"ctx":127882,"decode":43.0,"prefill":320},{"ctx":163110,"decode":39.6,"prefill":322},{"ctx":189411,"decode":40.3,"prefill":308},{"ctx":220512,"decode":39.7,"prefill":315},{"ctx":256303,"decode":38.8,"prefill":313},{"ctx":286030,"decode":40.0,"prefill":308},{"ctx":318460,"decode":41.5,"prefill":305},{"ctx":347249,"decode":39.9,"prefill":300},{"ctx":383575,"decode":37.5,"prefill":299},{"ctx":398518,"decode":35.4,"prefill":292}]},"iq3":{"label":"Qwen3.8-Flash-Next IQ3_XXS, 44 GiB","points":[{"ctx":3513,"decode":35.2,"prefill":241},{"ctx":21960,"decode":35.7,"prefill":288},{"ctx":29015,"decode":34.6,"prefill":274},{"ctx":66996,"decode":35.7,"prefill":281},{"ctx":93654,"decode":33.4,"prefill":282},{"ctx":127483,"decode":34.2,"prefill":278},{"ctx":163180,"decode":33.7,"prefill":273},{"ctx":189598,"decode":32.8,"prefill":267},{"ctx":220335,"decode":31.3,"prefill":264},{"ctx":248240,"decode":31.6,"prefill":263},{"ctx":259015,"decode":31.7,"prefill":258}]},"ds":{"label":"DeepSeek V4 Flash Q2, 81 GiB, streamed from SSD","points":[{"ctx":3524,"decode":12.1,"prefill":94},{"ctx":18940,"decode":11.2,"prefill":47},{"ctx":29410,"decode":11.0,"prefill":40},{"ctx":66109,"decode":10.0,"prefill":43},{"ctx":94910,"decode":8.7,"prefill":38},{"ctx":127141,"decode":9.1,"prefill":34}]}}</script>
+
+          <div class="stats" role="list">
+            <div class="stat" role="listitem"><p class="stat-num">44<small>tok/s</small></p><p class="stat-label">Qwen3.8-Flash-Next decode at 4K context, Q2_0, M1 Max</p></div>
+            <div class="stat" role="listitem"><p class="stat-num">398K<small>tokens</small></p><p class="stat-label">context where it still decodes at 35.4 tok/s</p></div>
+            <div class="stat" role="listitem"><p class="stat-num">2.1×</p><p class="stat-label">Splash on the same M1 Max with my kernels, 18.9 to 39.1 tok/s</p></div>
+            <div class="stat" role="listitem"><p class="stat-num">7.4<small>TFLOPS</small></p><p class="stat-label">my prefill kernel on a 10.4 TFLOPS GPU, Apple's MPP gets 2.4 to 3.5</p></div>
+            <div class="stat" role="listitem"><p class="stat-num">0.70<small>J/token</small></p><p class="stat-label">after 5 minutes under load at 73 °C, no throttling</p></div>
+          </div>
+
+
+
+          <div class="notes">
+            <article class="note reveal">
+              <h3>Same math, formats the M1 has</h3>
+              <p>The M1 has no bfloat16. A 4-bit weight becomes an exact half value by putting it in the mantissa of 1024.0 and subtracting 1024. Activations widen to fp32 by appending zero bits. Every product is exact, only the order of the additions changes.</p>
+<pre><span class="c">// q is 0..15</span>
+half w = as_type&lt;half&gt;(ushort(q | 0x6400))
+       - 1024.0h;          <span class="c">// exactly q</span></pre>
+            </article>
+
+            <article class="note reveal">
+              <h3>How close to the hardware</h3>
+              <p>Measured on the M1 Max, not taken from the spec sheet. Plenty is still left, a lot of it lost to around 1000 small dispatches per token.</p>
+              <div class="bars">
+                <div><div class="bar-label"><span>Decode memory traffic</span><span>150 of 400 GB/s</span></div><div class="bar" style="--w:37.5%"><i></i></div></div>
+                <div><div class="bar-label"><span>Flash-Next prefill matmul</span><span>4 of 10 TFLOPS</span></div><div class="bar" style="--w:40%"><i></i></div></div>
+                <div><div class="bar-label"><span>Splash prefill kernel</span><span>7.4 of 10.4 TFLOPS</span></div><div class="bar" style="--w:71%"><i></i></div></div>
+              </div>
+            </article>
+
+            <article class="note reveal">
+              <h3>Checking the output did not change</h3>
+              <p>Every kernel is tested against a reference path before it ships. Benchmarks use greedy sampling, a fresh server per build and no prompt cache, and the stock and new builds run in ABBA order.</p>
+              <ul class="checks">
+                <li><span>Perplexity (NLL), before / after</span><span>0.45044 / 0.45045</span></li>
+                <li><span>Top-1 token agreement</span><span>99.92%</span></li>
+                <li><span>Mean KL divergence</span><span>0.00013 nats</span></li>
+                <li><span>Quant decoders vs CPU</span><span>bit-exact</span></li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="writing" aria-labelledby="writing-heading">
+      <div class="container editorial">
+        <p class="section-index reveal" aria-hidden="true">04</p>
+        <div class="section-body">
+          <p class="eyebrow reveal">Writing</p>
+          <h2 id="writing-heading" class="section-heading reveal">Notes with the numbers</h2>
+          <p class="section-intro reveal">Long write-ups of the projects above, with charts and the commands to reproduce them. Most started as posts on r/LocalLLaMA.</p>
+          <ul class="work-list">
+<!-- posts:start -->
+            <li class="work-row reveal">
+              <a class="work-link" href="blog/flash-next-on-m1-max/">
+                <span class="work-name"><span class="work-date">4 Oct 2026 · 20 min</span>Qwen3.8-Flash-Next on a 2021 M1 Max: 44 tok/s, and 35 tok/s with 400K tokens in the context</span>
+                <span class="work-tagline">A 126B mixture-of-experts model on a 64 GB laptop, with kernels written for the M1, and how little the speed falls as the context grows.</span>
+                <svg class="icon work-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+              </a>
             </li>
-            <li class="reveal">
-              <a class="contact-link" href="https://github.com/paperniuk" rel="me"><span>github.com/paperniuk</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+            <li class="work-row reveal">
+              <a class="work-link" href="blog/splash-on-m1-part-2/">
+                <span class="work-name"><span class="work-date">26 Sep 2026 · 9 min</span>Splash on M1, part 2: 35B-A3B at 144 tok/s and a head-to-head with oMLX and MTPLX</span>
+                <span class="work-tagline">Attention and the MoE expert layers move off MPP too. Speed, GPU temperature, energy per token and memory against two MLX engines on the same Mac.</span>
+                <svg class="icon work-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+              </a>
             </li>
-            <li class="reveal">
-              <a class="contact-link" href="https://www.linkedin.com/in/paperniuk" rel="me"><span>LinkedIn</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+            <li class="work-row reveal">
+              <a class="work-link" href="blog/splash-on-m1/">
+                <span class="work-name"><span class="work-date">24 Sep 2026 · 7 min</span>Splash on a 2021 M1 Max: Qwen3.8-27B at 39 tok/s with custom Metal kernels</span>
+                <span class="work-tagline">Splash only runs on M3 and newer. I ported it to my M1 Max and rewrote the kernels that depended on bfloat16 and Apple&#x27;s MPP library, which doubled decode speed.</span>
+                <svg class="icon work-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+              </a>
             </li>
-            <li class="reveal">
-              <a class="contact-link" href="https://www.reddit.com/user/Erp4759/" rel="me"><span>u/Erp4759 on Reddit</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-            </li>
+<!-- posts:end -->
           </ul>
+          <p class="reveal" style="margin-top:1.6rem"><a class="link-arrow" href="blog/">All posts <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-heading">
+      <div class="container editorial">
+        <p class="section-index reveal" aria-hidden="true">05</p>
+        <div class="section-body">
+          <p class="eyebrow reveal">About</p>
+          <h2 id="about-heading" class="section-heading reveal">Erik Paperniuk</h2>
+          <div class="about">
+            <figure class="portrait-card reveal">
+              <img src="img/erik.jpg" width="460" height="460" alt="Portrait of Erik Paperniuk" loading="lazy" decoding="async">
+            </figure>
+            <div>
+              <div class="about-text reveal">
+                <p>I'm a system integration and automation engineer. The public side of my work is mostly two things: GPU kernels for running models locally, and tools that automate something tedious, like contact extraction or Moodle setup.</p>
+                <p>The inference work started because the engines I wanted to use skipped my own laptop. I measure everything on that one M1 Max and publish the raw numbers, so if you have an M2, M3 or M4 and want to compare, I'd like to hear from you.</p>
+              </div>
+              <ul class="contact-list">
+                <li class="reveal">
+                  <a class="contact-link" href="mailto:erp4759@gmail.com"><span>erp4759@gmail.com</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+                </li>
+                <li class="reveal">
+                  <a class="contact-link" href="https://github.com/paperniuk" rel="me"><span>github.com/paperniuk</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+                </li>
+                <li class="reveal">
+                  <a class="contact-link" href="https://www.linkedin.com/in/paperniuk" rel="me"><span>LinkedIn</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+                </li>
+                <li class="reveal">
+                  <a class="contact-link" href="https://www.reddit.com/user/Erp4759/" rel="me"><span>u/Erp4759 on Reddit</span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -304,40 +341,16 @@
         <p class="footer-title">System Integration &amp; Automation Engineer</p>
       </div>
       <ul class="footer-links">
+        <li><a href="blog/">Writing</a></li>
         <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
-        <li><a href="https://www.linkedin.com/in/paperniuk" rel="me">Erik Paperniuk on LinkedIn</a></li>
+        <li><a href="https://www.linkedin.com/in/paperniuk" rel="me">LinkedIn</a></li>
         <li><a href="https://www.reddit.com/user/Erp4759/" rel="me">u/Erp4759 on Reddit</a></li>
-        <li><a href="https://github.com/paperniuk?tab=repositories">All repositories</a></li>
+        <li><a href="blog/feed.xml">Feed</a></li>
       </ul>
     </div>
   </footer>
 
-  <script>
-    (function () {
-      "use strict";
-      document.documentElement.classList.add("js");
-      var items = document.querySelectorAll(".reveal");
-      var show = function (el) { el.classList.add("is-visible"); };
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-        items.forEach(show);
-        return;
-      }
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          var el = entry.target;
-          window.setTimeout(function () { show(el); }, Number(el.dataset.revealDelay || 0));
-          observer.unobserve(el);
-        });
-      }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
-      var groups = new Map();
-      items.forEach(function (el) {
-        var count = groups.get(el.parentElement) || 0;
-        el.dataset.revealDelay = Math.min(count * 70, 420);
-        groups.set(el.parentElement, count + 1);
-        observer.observe(el);
-      });
-    })();
-  </script>
+  <script src="assets/depth-chart.js" defer></script>
+  <script src="assets/reveal.js" defer></script>
 </body>
 </html>

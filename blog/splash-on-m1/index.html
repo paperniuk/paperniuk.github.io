@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Splash on a 2021 M1 Max: Qwen3.8-27B at 39 tok/s with custom Metal kernels · Erik Paperniuk</title>
+  <meta name="description" content="Splash only runs on M3 and newer. I ported it to my M1 Max and rewrote the kernels that depended on bfloat16 and Apple&#x27;s MPP library, which doubled decode speed.">
+  <link rel="canonical" href="https://paperniuk.github.io/blog/splash-on-m1/">
+  <link rel="alternate" type="application/atom+xml" title="Erik Paperniuk, notes" href="https://paperniuk.github.io/blog/feed.xml">
+  <meta property="og:site_name" content="Erik Paperniuk">
+  <meta property="og:title" content="Splash on a 2021 M1 Max: Qwen3.8-27B at 39 tok/s with custom Metal kernels · Erik Paperniuk">
+  <meta property="og:description" content="Splash only runs on M3 and newer. I ported it to my M1 Max and rewrote the kernels that depended on bfloat16 and Apple&#x27;s MPP library, which doubled decode speed.">
+  <meta property="og:url" content="https://paperniuk.github.io/blog/splash-on-m1/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://paperniuk.github.io/blog/img/splash-on-m1/9_npanj_bench.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Splash on a 2021 M1 Max: Qwen3.8-27B at 39 tok/s with custom Metal kernels","datePublished":"2026-09-24","description":"Splash only runs on M3 and newer. I ported it to my M1 Max and rewrote the kernels that depended on bfloat16 and Apple's MPP library, which doubled decode speed.","image":"https://paperniuk.github.io/blog/img/splash-on-m1/9_npanj_bench.png","url":"https://paperniuk.github.io/blog/splash-on-m1/","author":{"@type":"Person","name":"Erik Paperniuk","url":"https://paperniuk.github.io/"}}</script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2320242c'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial,sans-serif' font-weight='600' font-size='17' fill='%239cb6d8' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="../../fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <nav class="site-nav container" aria-label="Primary navigation">
+      <a class="site-brand" href="../../">Erik Paperniuk</a>
+      <ul class="nav-links">
+        <li><a href="../../#work">Projects</a></li>
+        <li><a href="../../#benchmarks">Benchmarks</a></li>
+        <li><a href="../../blog/" aria-current="page">Writing</a></li>
+        <li><a href="../../#about">About</a></li>
+        <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main id="main-content" class="post-wrap">
+    <div class="container">
+      <header class="post-header">
+        <a class="back" href="../">&larr; all posts</a>
+        <h1>Splash on a 2021 M1 Max: Qwen3.8-27B at 39 tok/s with custom Metal kernels</h1>
+        <p class="lede">Splash only runs on M3 and newer. I ported it to my M1 Max and rewrote the kernels that depended on bfloat16 and Apple&#x27;s MPP library, which doubled decode speed.</p>
+        <p class="post-meta" style="margin-top:1.2rem"><time datetime="2026-09-24">24 Sep 2026</time><span>7 min read</span></p>
+        <ul class="tags" style="margin-top:0.8rem" aria-label="Tags"><li class="tag">Metal</li><li class="tag">Splash</li><li class="tag">M1</li></ul>
+      </header>
+      <article class="post">
+<p>TL;DR: 39 tok/s is the average of npanj's five-prompt Splash benchmark (short prompts, default reasoning), up from 19 tok/s with Splash's own kernels on the same Mac. In a real coding-agent session (opencode, 30K-90K context) it ran at 19-36 tok/s. Details and more conditions below.</p>
+<p>Last week the Inco team released Splash 1.0 (https://github.com/incoai/splash), a local inference engine for Apple silicon built around one model at a time, with model-specific Metal kernels and DFlash speculative decoding. On an M5 Pro they report Qwen3.8-27B decoding at twice the speed of the next-fastest engine. It is a really impressive piece of work. It also only runs on an M3 or newer.</p>
+<p>I have an M1 Max (32 GPU cores, 64 GB), so I adapted it. Enabling the M1 was enough to make it run, but slowly: Splash's kernels rely on bfloat16 arithmetic, which the M1 does not have, and on Apple's MPP matrix library, which is slow on this GPU. So I wrote my own kernels for those parts.</p>
+<p><strong>The gist:</strong> the model does the same math either way: 4-bit weights times activations, summed up. Stock Splash does it in bfloat16, which the M1 can't do in hardware, so on M1 it falls back to Apple's generic matrix library, which reaches only a quarter to a third of the GPU's peak. My kernels do the identical math in formats the M1 runs natively: each 4-bit weight is turned into an exact half-precision number with a small bit trick, each activation becomes an exact fp32 number, and the M1's matrix instructions multiply and add them in fp32 without leaving registers. Every multiplication is exact and only the order of additions changes, so the results match up to the last bit of rounding (99.92% same top token). For several parallel requests, each weight is also unpacked once and reused for all of them.</p>
+<p>What surprised me most: the M1 Max is not weak hardware. Apple rates its GPU at 10.4 TFLOPS FP32, my microbenchmark gets 8.6-9.9 TFLOPS out of its matrix instructions, and its 400 GB/s memory bandwidth is more than an M4 Pro's 273 GB/s. What held it back was software built for newer chips. With kernels written for it, a five-year-old laptop runs a 27B model with a 256K context at 64% of an M5 Pro's speed on the same benchmark, up from 31%.</p>
+<p>Every number below compares <strong>stock Splash kernels running on my M1 Max</strong> ("before") with <strong>my kernels</strong> ("after"): same machine, same model (Qwen3.8-27B, 4-bit), temperature 0, fresh server, no prompt cache.</p>
+<p><strong>Benchmark 1: npanj's splash-plus prompts.</strong> npanj (GitHub) published a Splash benchmark with five fixed prompts (https://github.com/npanj/splash-plus). I ran their script unmodified: 250 tokens, the model's default reasoning (xhigh), speed from Splash's own counter.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Prompt</th>
+<th style="text-align: right;">Before</th>
+<th style="text-align: right;">After</th>
+<th style="text-align: right;">npanj's Splash-Q4 on an M5 Pro (64 GB)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Math (bat and ball)</td>
+<td style="text-align: right;">27.1 tok/s</td>
+<td style="text-align: right;">57.0 tok/s</td>
+<td style="text-align: right;">83.3 tok/s</td>
+</tr>
+<tr>
+<td>Coding (merge_intervals)</td>
+<td style="text-align: right;">20.1 tok/s</td>
+<td style="text-align: right;">43.4 tok/s</td>
+<td style="text-align: right;">75.5 tok/s</td>
+</tr>
+<tr>
+<td>Constraint reasoning</td>
+<td style="text-align: right;">19.7 tok/s</td>
+<td style="text-align: right;">38.2 tok/s</td>
+<td style="text-align: right;">59.3 tok/s</td>
+</tr>
+<tr>
+<td>Domain knowledge</td>
+<td style="text-align: right;">11.7 tok/s</td>
+<td style="text-align: right;">25.3 tok/s</td>
+<td style="text-align: right;">39.0 tok/s</td>
+</tr>
+<tr>
+<td>Writing (3 sentences)</td>
+<td style="text-align: right;">15.9 tok/s</td>
+<td style="text-align: right;">31.6 tok/s</td>
+<td style="text-align: right;">46.2 tok/s</td>
+</tr>
+<tr>
+<td><strong>Average</strong></td>
+<td style="text-align: right;"><strong>18.9 tok/s</strong></td>
+<td style="text-align: right;"><strong>39.1 tok/s</strong></td>
+<td style="text-align: right;"><strong>60.7 tok/s</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><img src="../img/splash-on-m1/9_npanj_bench.png" alt="npanj's five-prompt benchmark: stock vs my kernels on M1 Max, and M5 Pro" width="1440" height="672" loading="lazy" decoding="async"></p>
+<p>The last column is npanj's own run of the same script on an M5 Pro with 64 GB. My 2021 M1 Max went from 31% to 64% of an M5 Pro on these prompts.</p>
+<p><strong>Benchmark 2: context and reasoning effort</strong> (one request, prompt processing excluded):</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Request</th>
+<th style="text-align: right;">Context</th>
+<th>Reasoning</th>
+<th style="text-align: right;">Before</th>
+<th style="text-align: right;">After</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code</td>
+<td style="text-align: right;">22 tok</td>
+<td>off</td>
+<td style="text-align: right;">26 tok/s</td>
+<td style="text-align: right;">54 tok/s</td>
+</tr>
+<tr>
+<td>Prose</td>
+<td style="text-align: right;">23 tok</td>
+<td>off</td>
+<td style="text-align: right;">16 tok/s</td>
+<td style="text-align: right;">36 tok/s</td>
+</tr>
+<tr>
+<td>Math problem</td>
+<td style="text-align: right;">40-82 tok</td>
+<td>low / medium / xhigh</td>
+<td style="text-align: right;">31 / 31 / 26 tok/s</td>
+<td style="text-align: right;">67 / 67 / 55 tok/s</td>
+</tr>
+<tr>
+<td>Coding problem</td>
+<td style="text-align: right;">46-88 tok</td>
+<td>low / medium / xhigh</td>
+<td style="text-align: right;">23 / 21 / 15 tok/s</td>
+<td style="text-align: right;">46 / 48 / 33 tok/s</td>
+</tr>
+<tr>
+<td>Code explanation</td>
+<td style="text-align: right;">8K tok</td>
+<td>off</td>
+<td style="text-align: right;">13 tok/s</td>
+<td style="text-align: right;">27 tok/s</td>
+</tr>
+<tr>
+<td>Code explanation</td>
+<td style="text-align: right;">32K tok</td>
+<td>off</td>
+<td style="text-align: right;">13 tok/s</td>
+<td style="text-align: right;">24 tok/s</td>
+</tr>
+<tr>
+<td>4 parallel code requests</td>
+<td style="text-align: right;">22 tok each</td>
+<td>off</td>
+<td style="text-align: right;">18 tok/s total</td>
+<td style="text-align: right;">65 tok/s total</td>
+</tr>
+</tbody>
+</table></div>
+<p><img src="../img/splash-on-m1/7_reasoning.png" alt="Generation speed with reasoning low / medium / xhigh" width="1360" height="608" loading="lazy" decoding="async"></p>
+<p>Prompt processing: 2K prompt 53 -&gt; 142 tok/s, 8K 52 -&gt; 133 tok/s, 32K 48 -&gt; 110 tok/s (time to first token on 32K: 672 s -&gt; 290 s).</p>
+<p><img src="../img/splash-on-m1/6_prefill_speed.png" alt="Prefill speed by prompt length" width="1120" height="576" loading="lazy" decoding="async"></p>
+<p>I also followed Splash's own published methodology (256 tokens, reasoning off, warmup, ABBA, medians) with my own prompts for their four scenario names: 2.07-2.11x in every scenario.</p>
+<p><strong>Benchmark 3: a real coding-agent session.</strong> I let opencode rewrite the RealWorld "Conduit" backend from Express to FastAPI against the official API test suite, with reasoning medium, one request at a time. 43 minutes, 25 requests, context growing from 30K to 89K tokens:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th style="text-align: right;">Context</th>
+<th style="text-align: right;">Decode (median)</th>
+<th style="text-align: right;">Prefill of new prompt tokens (median)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">16-32K</td>
+<td style="text-align: right;">36.5 tok/s</td>
+<td style="text-align: right;">96 tok/s</td>
+</tr>
+<tr>
+<td style="text-align: right;">32-64K</td>
+<td style="text-align: right;">19.5 tok/s</td>
+<td style="text-align: right;">68 tok/s</td>
+</tr>
+<tr>
+<td style="text-align: right;">64-96K</td>
+<td style="text-align: right;">23.4 tok/s</td>
+<td style="text-align: right;">54 tok/s</td>
+</tr>
+</tbody>
+</table></div>
+<p>95% of prompt tokens came from Splash's prefix cache, but about half of the wall time was still spent waiting for the first token after each tool call. On the M1, long-context attention is now the bottleneck for agents, not the matrix kernels.</p>
+<p><img src="../img/splash-on-m1/session_report.png" alt="Real opencode session: decode, prefill and TTFT vs context" width="2100" height="600" loading="lazy" decoding="async"></p>
+<p>Speed depends a lot on the text: the draft model predicts math and code well and prose less well, and long contexts cost more.</p>
+<p>Why the M1 was slow, and what I changed:</p>
+<ul>
+<li>Apple's MPP matmul runs the model's 4-bit layers at 2.4-3.5 TFLOPS on this GPU. Apple rates the M1 Max GPU at 10.4 TFLOPS FP32, and a register-only simdgroup MMA microbenchmark reaches 8.6 (fp32 x fp32) to 9.9 (half x fp32). My register-only prompt-processing kernel runs the same layers at 7.3-7.4 TFLOPS.</li>
+</ul>
+<p><img src="../img/splash-on-m1/1_tflops.png" alt="M1 Max peak compute vs Apple MPP and my kernel" width="1280" height="608" loading="lazy" decoding="async"></p>
+<ul>
+<li>No bfloat16 on M1: 4-bit weights become exact half values with a bit trick (<code>nibble | 0x6400</code> = 1024 + q, then subtract 1024), activations go from bf16 to fp32 by appending zero bits, products and sums stay in fp32. Every q*x product is exact, so only the summation order changes.</li>
+<li>Splash's fastest decode kernel produced garbage on the M1: its split-K reduction read partial sums through a non-coherent cache. One <code>coherent(device)</code> fixed it.</li>
+<li>A new decode kernel unpacks each weight once for all parallel requests, which is where the 3.6x with four requests comes from.</li>
+</ul>
+<p>Quality check: I compared the model's token probabilities before and after the last kernel change on 2528 positions. The top token agrees 99.92% of the time and the mean KL divergence is 0.00013 nats. The engine's test suite passes.</p>
+<p>Code: <a href="https://github.com/paperniuk/splash/tree/apple7-m1-kernels">https://github.com/paperniuk/splash/tree/apple7-m1-kernels</a> (a fork; I'm offering it upstream in <a href="https://github.com/incoai/splash/issues/131">https://github.com/incoai/splash/issues/131</a>). Credit to the Inco team for Splash and to npanj for a reproducible benchmark. M2 uses the same code path and should work, but I haven't tested it. If you have an M2, I'd love to hear how it runs.</p>
+      </article>
+      <div class="post-foot">
+        <a class="link-arrow" href="https://github.com/paperniuk">GitHub <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+        <a class="link-arrow" href="https://www.reddit.com/r/LocalLLM/comments/1woq7cd">Discussion on Reddit <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+        <a class="link-arrow" href="../">All posts <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-name">Erik Paperniuk</p>
+        <p class="footer-title">System Integration &amp; Automation Engineer</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="../../blog/">Writing</a></li>
+        <li><a href="https://github.com/paperniuk" rel="me">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/paperniuk" rel="me">LinkedIn</a></li>
+        <li><a href="https://www.reddit.com/user/Erp4759/" rel="me">u/Erp4759 on Reddit</a></li>
+        <li><a href="../../blog/feed.xml">Feed</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>
