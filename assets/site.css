@@ -225,3 +225,9 @@ a { color: inherit; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+.meta-right { display: inline-flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+.stars { display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--font-mono); font-size: 0.74rem; color: var(--soft); vertical-align: middle; }
+.stars[hidden] { display: none; }
+.stars .icon { color: #e3b341; width: 0.9em; height: 0.9em; }
+.work-name .stars { margin-left: 0.7rem; font-weight: 400; }
