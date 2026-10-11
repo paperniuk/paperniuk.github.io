@@ -229,11 +229,11 @@ a { color: inherit; }
 .work-name .stars { margin-left: 0.7rem; font-weight: 400; }
 .stars .gh { color: var(--soft); width: 1.05em; height: 1.05em; margin-right: 0.1rem; }
 
-.hero-layout { display: grid; gap: 2.5rem; align-items: center; }
-@media (min-width: 900px) { .hero-layout { grid-template-columns: minmax(0, 1fr) 19rem; gap: 4rem; } }
+.hero-layout { display: grid; gap: 2rem; align-items: center; }
+@media (min-width: 560px) { .hero-layout { grid-template-columns: minmax(0, 1fr) clamp(9rem, 22vw, 19rem); gap: clamp(1.5rem, 4vw, 4rem); } }
 .hero-copy { min-width: 0; }
 .portrait-card { width: 100%; max-width: 15rem; padding: 0.6rem; background: var(--surface); border: 1px solid var(--hairline); transition: border-color 0.4s var(--ease); }
-@media (min-width: 900px) { .portrait-card { max-width: none; } }
+@media (min-width: 560px) { .portrait-card { max-width: none; } }
 .portrait-card img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; filter: saturate(0.7) brightness(0.97); transition: filter 0.5s var(--ease); }
 .portrait-card:hover { border-color: var(--hairline-strong); }
 .portrait-card:hover img { filter: none; }
