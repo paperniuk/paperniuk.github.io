@@ -51,7 +51,7 @@ a { color: inherit; }
 .hero { position: relative; padding-block: clamp(3.5rem, 10vh, 6.5rem) clamp(3rem, 7vh, 4.5rem); border-bottom: 1px solid var(--hairline); overflow: hidden; }
 .hero::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--hairline) 1px, transparent 1px), linear-gradient(90deg, var(--hairline) 1px, transparent 1px); background-size: 44px 44px; opacity: 0.22; -webkit-mask-image: radial-gradient(ellipse 70% 90% at 70% 0%, #000 0%, transparent 75%); mask-image: radial-gradient(ellipse 70% 90% at 70% 0%, #000 0%, transparent 75%); pointer-events: none; }
 .hero > .container { position: relative; }
-.social { display: flex; flex-wrap: wrap; gap: 0.6rem; list-style: none; padding: 0; margin: 0 0 2.2rem; }
+.social { display: flex; flex-wrap: wrap; gap: 0.6rem; list-style: none; padding: 0; margin: 0; }
 .social a { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; color: var(--soft); border: 1px solid var(--hairline-strong); background: var(--surface); transition: color 0.25s var(--ease), border-color 0.25s var(--ease), transform 0.25s var(--ease), background 0.25s var(--ease); }
 .social a:hover { color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft); transform: translateY(-2px); }
 .social svg { width: 1.25rem; height: 1.25rem; }
