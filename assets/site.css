@@ -42,6 +42,7 @@ a { color: inherit; }
 .demo-banner-inner { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem 1rem; padding-block: 0.6rem; }
 .demo-banner-text { margin: 0; color: var(--soft); font-size: 0.9rem; flex: 1 1 18rem; }
 .demo-banner-text strong { color: var(--text); font-weight: 600; }
+.demo-banner-text code { font-family: var(--font-mono); font-size: 0.85em; color: var(--text); }
 .demo-banner .link-arrow { font-size: 0.9rem; white-space: nowrap; }
 
 .site-header { border-bottom: 1px solid var(--hairline); background: rgba(32, 36, 44, 0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 50; }
