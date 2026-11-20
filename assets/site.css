@@ -37,7 +37,7 @@ a { color: inherit; }
 .tag { display: inline-block; font-family: var(--font-mono); font-size: 0.7rem; color: var(--soft); background: var(--bg-deep); border: 1px solid var(--hairline); padding: 0.18rem 0.55rem; }
 .badge { display: inline-block; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-line); padding: 0.25rem 0.7rem; }
 
-/* top banner: MetaFake live demo */
+/* top banner */
 .demo-banner { background: var(--accent-soft); border-bottom: 1px solid var(--accent-line); }
 .demo-banner-inner { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem 1rem; padding-block: 0.6rem; }
 .demo-banner-text { margin: 0; color: var(--soft); font-size: 0.9rem; flex: 1 1 18rem; }
